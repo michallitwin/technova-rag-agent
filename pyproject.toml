@@ -1,0 +1,11 @@
+[project]
+name = "technova-rag-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "chromadb>=1.5.9",
+    "requests>=2.34.2",
+    "sentence-transformers>=6.2.0",
+]
