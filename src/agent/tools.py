@@ -1,6 +1,6 @@
 import sqlite3
 from src.rag.pipeline import search_db
-
+from datetime import date
 from src.config import settings
 
 
@@ -13,7 +13,12 @@ def get_order(order_id: int) -> dict:
         ).fetchone()
     if row is None:
         return {"error": f"Order {order_id} not found"}
-    return dict(row)
+    order = dict(row)
+    # Date arithmetic is done in code, not by the LLM (small models often get it wrong)
+    if order["delivery_date"]:
+        delivered = date.fromisoformat(order["delivery_date"])
+        order["days_since_delivery"] = (date.today() - delivered).days
+    return order
 
 
 def search_policy(query: str) -> dict:

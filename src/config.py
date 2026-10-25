@@ -22,6 +22,12 @@ class Settings:
 
     # Request limits
     llm_timeout_s: int = int(os.getenv("LLM_TIMEOUT_S", "120"))
-
+    agent_max_steps: int = int(os.getenv("AGENT_MAX_STEPS", "4"))
+    prompts_dir: Path = Path(os.getenv("PROMPTS_DIR", "config/prompts"))
 
 settings = Settings()
+
+
+def load_prompt(name: str) -> str:
+    """Read a prompt template from the prompts directory (e.g. config/prompts/tools.txt)."""
+    return (settings.prompts_dir / f"{name}.txt").read_text(encoding="utf-8").strip()
