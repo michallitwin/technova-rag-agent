@@ -13,11 +13,11 @@ The agent is a hand-written **ReAct loop** (no framework): the LLM decides step 
 
 ```
 $ uv run --env-file .env python -m src.agent.react "Can I still return order 1042?"
-Step 1: search_policy(query='return period') -> 2 chunks
-Step 2: get_order(order_id=1042) -> delivered, 16 days ago
-Step 3: repeated call -> forcing final answer
+Step 1: get_order(order_id=1042) -> delivered, 16 days ago, return window open
+Step 2: search_policy(query='return policy') -> 2 chunks
+Step 3: final answer
 
-Answer: ... order 1042 was delivered 16 days ago, so you can still return it.
+Answer: Yes, John Smith can return the Smartwatch within 30 days of receiving the delivery, which is until 2026-11-09.
 ```
 
 A one-step baseline agent (router → one tool → answer) answers the same question from the policy alone, without checking the order. The ReAct loop fixes this by using both tools.
@@ -83,7 +83,9 @@ uv run --env-file .env python -m src.agent.react -v "..."   # show full tool res
 |----------|-------------|-----|
 | Two stores: Chroma for documents, SQLite for orders | one vector DB | documents are searched by meaning, orders by exact ID |
 | Hand-written ReAct loop first | LangGraph from day one | understand the mechanism; framework version comes later for comparison |
-| Date arithmetic in the tool (`days_since_delivery`) | LLM computes days | small models make arithmetic mistakes; code is deterministic |
+| Return eligibility decided in code (`return_status`: a ready-made sentence) | LLM compares days with the policy | the model said "yes" for a 38-day-old order with a 30-day window, even with prompt rules; a decision about the customer's money must be deterministic. **Code decides, the LLM explains.** |
+| Window length in config (`RETURN_WINDOW_DAYS`) | read it from the policy text | deterministic; trade-off: the rule exists in config and in the policy document |
+| Actionable tool errors ("Ask the customer for their order number.") | technical errors | the model follows a next step written in the data much better than a rule in the prompt |
 | Forced final answer when the model repeats a call or hits `max_steps` | stronger prompt only | a stricter prompt did not stop the loop; a rule in code always works |
 | Prompts in `config/prompts/` | strings in code | single source of truth, change behaviour without touching code |
 | Placeholders in tool examples | real values in examples | the model copied example values (`return period`, `1042`) into its calls |
@@ -97,11 +99,14 @@ uv run --env-file .env python -m src.agent.react -v "..."   # show full tool res
 - **One-step router on mixed questions.** "Can I still return order 1042?" got a confident answer from the policy alone, without checking the order (a silent failure). Fixed by the ReAct loop.
 - **The loop did not stop.** The model collected both facts but kept repeating calls until the step limit. A prompt rule did not help; a forced answer in code did.
 - **Example bias.** The model copied values from the tool examples in the prompt (e.g. `get_order(1042)` for a question about another customer). Fixed with placeholders: steps for a warranty question dropped from 2 to 1.
-- **Number comparison.** For an order delivered 38 days ago the model still said the 30-day return window was open. Under investigation.
+- **Number comparison.** For an order delivered 38 days ago the model said the 30-day return window was open. Three prompt versions did not help (0/3). A boolean field `return_window_open: false` was ignored too. A ready-made sentence (`return_status`) fixed it immediately: for a small model, the form of the data matters more than instructions.
+- **Missing order number.** For "What did Emma Brown order?" the model called `get_order` with `None` and the name until the step limit, ignoring a prompt rule. An actionable error message fixed it: 2 steps, and the agent asks for the order number.
+- **Open issues** (to be measured in evaluation): for an unknown store location the agent says "we don't have one" instead of "I don't know"; after "order not found" it sometimes keeps searching the policy.
 
 ## Security and limitations
 
 - **No authentication in the MVP.** Anyone who knows an order number can see that order. In production, order lookups must be scoped to the logged-in customer: the customer ID comes from the session, never from text the user types to the LLM.
+- The agent also repeats the customer's name to whoever gives the order number.
 - No search by customer name, on purpose (privacy). The agent asks for the order number instead.
 - Runs locally on a small model (`llama3.2`), so answers can be vague; evaluation will measure this.
 
