@@ -9,6 +9,7 @@ class Settings:
     # LLM (local Ollama now, Amazon Bedrock later)
     ollama_url: str = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
     llm_model: str = os.getenv("LLM_MODEL", "llama3.2")
+    llm_timeout_s: int = int(os.getenv("LLM_TIMEOUT_S", "120"))
 
     # Embeddings and vector store
     embedding_model: str = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
@@ -16,14 +17,17 @@ class Settings:
     chroma_collection: str = os.getenv("CHROMA_COLLECTION", "technova_docs")
     top_k: int = int(os.getenv("TOP_K", "2"))
 
-    # Data
+    # Data and prompts
     docs_dir: Path = Path(os.getenv("DOCS_DIR", "data/docs"))
     db_path: Path = Path(os.getenv("DB_PATH", "data/technova.db"))
-
-    # Request limits
-    llm_timeout_s: int = int(os.getenv("LLM_TIMEOUT_S", "120"))
-    agent_max_steps: int = int(os.getenv("AGENT_MAX_STEPS", "4"))
     prompts_dir: Path = Path(os.getenv("PROMPTS_DIR", "config/prompts"))
+
+    # Agent
+    agent_max_steps: int = int(os.getenv("AGENT_MAX_STEPS", "4"))
+
+    # Business rules (decided in code, not by the LLM)
+    return_window_days: int = int(os.getenv("RETURN_WINDOW_DAYS", "30"))
+
 
 settings = Settings()
 

@@ -2,11 +2,14 @@ search_policy(query: str)
   What: searches the TechNova store policy (returns, delivery, warranty, payments).
   When: the question is about general store rules.
   Not when: the question is only about the status or details of a specific order.
-  Example: {"tool": "search_policy", "args": {"query": "return period"}}
+  Example: {"tool": "search_policy", "args": {"query": "<key words from the customer's question>"}}
+
 
 get_order(order_id: int)
-  What: returns one order from the database: customer, product, total, dates, status
-        and days_since_delivery (only if the order was delivered).
+  What: returns one order from the database: customer, product, total, dates, status.
+        For delivered orders also days_since_delivery, return_deadline and return_window_open
+        (computed by the system - use return_window_open to answer return questions).
   When: the question mentions a specific order number.
   Not when: the question is about general rules and has no order number.
-  Example: {"tool": "get_order", "args": {"order_id": 1042}}
+      If the customer gives a name but no order number, do not guess an order number.
+  Example: {"tool": "get_order", "args": {"order_id": <order number from the customer's question>}}

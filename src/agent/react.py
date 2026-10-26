@@ -1,5 +1,3 @@
-"""ReAct agent loop: the LLM picks tools step by step until it can answer."""
-
 import argparse
 import json
 import logging
@@ -45,7 +43,8 @@ def describe_result(result: dict) -> str:
     if "chunks" in result:
         return f"{len(result['chunks'])} chunks"
     if "days_since_delivery" in result:
-        return f"{result['status']}, {result['days_since_delivery']} days ago"
+        window = "open" if result["return_window_open"] else "closed"
+        return f"{result['status']}, {result['days_since_delivery']} days ago, return window {window}"
     return result.get("status", "ok")
 
 

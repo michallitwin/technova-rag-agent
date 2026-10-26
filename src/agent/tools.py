@@ -1,6 +1,6 @@
 import sqlite3
 from src.rag.pipeline import search_db
-from datetime import date
+from datetime import date, timedelta
 from src.config import settings
 
 
@@ -13,11 +13,21 @@ def get_order(order_id: int) -> dict:
         ).fetchone()
     if row is None:
         return {"error": f"Order {order_id} not found"}
+
     order = dict(row)
-    # Date arithmetic is done in code, not by the LLM (small models often get it wrong)
+    # Dates and the return decision are computed in code, not by the LLM
     if order["delivery_date"]:
+        today = date.today()
         delivered = date.fromisoformat(order["delivery_date"])
-        order["days_since_delivery"] = (date.today() - delivered).days
+        deadline = delivered + timedelta(days=settings.return_window_days)
+        order["days_since_delivery"] = (today - delivered).days
+        order["return_deadline"] = deadline.isoformat()
+        order["return_window_open"] = today <= deadline
+        order["return_status"] = (
+            f"Return possible until {deadline.isoformat()}."
+            if order["return_window_open"]
+            else f"Return NOT possible: the return window closed on {deadline.isoformat()}."
+        )
     return order
 
 
