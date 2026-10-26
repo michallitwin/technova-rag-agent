@@ -1,0 +1,528 @@
+[
+  {
+    "id": "P01",
+    "category": "policy",
+    "question": "How long is the warranty?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Warranty",
+    "expected_facts": [
+      [
+        "24 months",
+        "24-month",
+        "two years",
+        "2 years"
+      ]
+    ]
+  },
+  {
+    "id": "P02",
+    "category": "policy",
+    "question": "How much does delivery cost?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Delivery",
+    "expected_facts": [
+      [
+        "$5",
+        "5 USD",
+        "5 dollars"
+      ],
+      [
+        "$70",
+        "70 USD",
+        "70 dollars"
+      ]
+    ]
+  },
+  {
+    "id": "P03",
+    "category": "policy",
+    "question": "How long does delivery take?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Delivery",
+    "expected_facts": [
+      [
+        "1-3",
+        "1–3",
+        "1 to 3",
+        "one to three"
+      ]
+    ]
+  },
+  {
+    "id": "P04",
+    "category": "policy",
+    "question": "If I order before 2 PM, when will my order ship?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Delivery",
+    "expected_facts": [
+      [
+        "same business day",
+        "same day"
+      ]
+    ]
+  },
+  {
+    "id": "P05",
+    "category": "policy",
+    "question": "Who pays for return shipping?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Returns",
+    "expected_facts": [
+      [
+        "customer",
+        "you"
+      ],
+      [
+        "damaged"
+      ]
+    ]
+  },
+  {
+    "id": "P06",
+    "category": "policy",
+    "question": "What payment methods do you accept?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Payments",
+    "expected_facts": [
+      [
+        "card"
+      ],
+      [
+        "PayPal"
+      ],
+      [
+        "bank transfer"
+      ]
+    ]
+  },
+  {
+    "id": "P07",
+    "category": "policy",
+    "question": "How long does it take to process a complaint?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Warranty",
+    "expected_facts": [
+      [
+        "14 days",
+        "two weeks",
+        "fourteen days"
+      ]
+    ]
+  },
+  {
+    "id": "P08",
+    "category": "policy",
+    "question": "In what condition must a returned product be?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Returns",
+    "expected_facts": [
+      [
+        "unused"
+      ],
+      [
+        "original packaging"
+      ]
+    ]
+  },
+  {
+    "id": "P09",
+    "category": "policy",
+    "question": "How do I report a defect?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Warranty",
+    "expected_facts": [
+      [
+        "complaint form"
+      ],
+      [
+        "proof of purchase"
+      ]
+    ]
+  },
+  {
+    "id": "P10",
+    "category": "policy",
+    "question": "When is an order paid by bank transfer processed?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Payments",
+    "expected_facts": [
+      [
+        "payment is received",
+        "payment has been received",
+        "payment arrives",
+        "receive the payment",
+        "payment received"
+      ]
+    ]
+  },
+  {
+    "id": "O01",
+    "category": "order",
+    "question": "What is the status of order 1043?",
+    "expected_tools": [
+      "get_order"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "shipped"
+      ]
+    ]
+  },
+  {
+    "id": "O02",
+    "category": "order",
+    "question": "What is the status of order 1046?",
+    "expected_tools": [
+      "get_order"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "processing",
+        "being processed",
+        "in progress"
+      ]
+    ]
+  },
+  {
+    "id": "O03",
+    "category": "order",
+    "question": "What was ordered in order 1045?",
+    "expected_tools": [
+      "get_order"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "laptop stand"
+      ]
+    ]
+  },
+  {
+    "id": "O04",
+    "category": "order",
+    "question": "How much did order 1042 cost?",
+    "expected_tools": [
+      "get_order"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "129"
+      ]
+    ]
+  },
+  {
+    "id": "O05",
+    "category": "order",
+    "question": "When was order 1044 delivered?",
+    "expected_tools": [
+      "get_order"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "2026-10-20",
+        "October 20",
+        "20 October",
+        "Oct 20"
+      ]
+    ]
+  },
+  {
+    "id": "O06",
+    "category": "order",
+    "question": "Was order 1045 cancelled?",
+    "expected_tools": [
+      "get_order"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "cancelled",
+        "canceled"
+      ]
+    ]
+  },
+  {
+    "id": "M01",
+    "category": "mixed",
+    "question": "Can I still return order 1042?",
+    "expected_tools": [
+      "get_order",
+      "search_policy"
+    ],
+    "expected_section": "Returns",
+    "expected_facts": [
+      [
+        "2026-11-09",
+        "November 9",
+        "9 November",
+        "Nov 9"
+      ]
+    ]
+  },
+  {
+    "id": "M02",
+    "category": "mixed",
+    "question": "Can I still return order 1041?",
+    "expected_tools": [
+      "get_order",
+      "search_policy"
+    ],
+    "expected_section": "Returns",
+    "expected_facts": [
+      [
+        "not possible",
+        "cannot",
+        "can't",
+        "not allowed",
+        "closed",
+        "expired",
+        "no longer"
+      ],
+      [
+        "2026-10-18",
+        "October 18",
+        "18 October",
+        "Oct 18"
+      ]
+    ]
+  },
+  {
+    "id": "M03",
+    "category": "mixed",
+    "question": "Until when can I return order 1044?",
+    "expected_tools": [
+      "get_order",
+      "search_policy"
+    ],
+    "expected_section": "Returns",
+    "expected_facts": [
+      [
+        "2026-11-19",
+        "November 19",
+        "19 November",
+        "Nov 19"
+      ]
+    ]
+  },
+  {
+    "id": "M04",
+    "category": "mixed",
+    "question": "Did order 1044 get free delivery?",
+    "expected_tools": [
+      "get_order",
+      "search_policy"
+    ],
+    "expected_section": "Delivery",
+    "expected_facts": [
+      [
+        "yes",
+        "free"
+      ]
+    ]
+  },
+  {
+    "id": "M05",
+    "category": "mixed",
+    "question": "How much was delivery for order 1043?",
+    "expected_tools": [
+      "get_order",
+      "search_policy"
+    ],
+    "expected_section": "Delivery",
+    "expected_facts": [
+      [
+        "$5",
+        "5 USD",
+        "5 dollars"
+      ]
+    ]
+  },
+  {
+    "id": "M06",
+    "category": "mixed",
+    "question": "Did order 1041 qualify for free delivery?",
+    "expected_tools": [
+      "get_order",
+      "search_policy"
+    ],
+    "expected_section": "Delivery",
+    "expected_facts": [
+      [
+        "no",
+        "did not",
+        "didn't",
+        "not qualify",
+        "not eligible"
+      ]
+    ]
+  },
+  {
+    "id": "M07",
+    "category": "mixed",
+    "question": "The smartwatch from order 1042 stopped working. Is it still under warranty?",
+    "expected_tools": [
+      "get_order",
+      "search_policy"
+    ],
+    "expected_section": "Warranty",
+    "expected_facts": [
+      [
+        "yes",
+        "still under warranty",
+        "covered"
+      ],
+      [
+        "24 months",
+        "24-month",
+        "two years"
+      ]
+    ]
+  },
+  {
+    "id": "N01",
+    "category": "no_answer",
+    "question": "Do you have a store in Krakow?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "don't know",
+        "do not know",
+        "don't have information",
+        "no information",
+        "not able to find",
+        "couldn't find",
+        "not sure"
+      ]
+    ]
+  },
+  {
+    "id": "N02",
+    "category": "no_answer",
+    "question": "Do you ship to Japan?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "don't know",
+        "do not know",
+        "don't have information",
+        "no information",
+        "not able to find",
+        "couldn't find",
+        "not sure"
+      ]
+    ]
+  },
+  {
+    "id": "N03",
+    "category": "no_answer",
+    "question": "What are your opening hours?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "don't know",
+        "do not know",
+        "don't have information",
+        "no information",
+        "not able to find",
+        "couldn't find",
+        "not sure"
+      ]
+    ]
+  },
+  {
+    "id": "N04",
+    "category": "no_answer",
+    "question": "Do you sell iPhones?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "don't know",
+        "do not know",
+        "don't have information",
+        "no information",
+        "not able to find",
+        "couldn't find",
+        "not sure"
+      ]
+    ]
+  },
+  {
+    "id": "E01",
+    "category": "missing_info",
+    "question": "What did Emma Brown order?",
+    "expected_tools": [],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "order number"
+      ]
+    ]
+  },
+  {
+    "id": "E02",
+    "category": "missing_info",
+    "question": "Where is my order?",
+    "expected_tools": [],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "order number"
+      ]
+    ]
+  },
+  {
+    "id": "E03",
+    "category": "missing_info",
+    "question": "When will order 9999 arrive?",
+    "expected_tools": [
+      "get_order"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "not found",
+        "couldn't find",
+        "could not find",
+        "doesn't exist",
+        "does not exist",
+        "check the order number"
+      ]
+    ]
+  }
+]
