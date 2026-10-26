@@ -12,7 +12,7 @@ def get_order(order_id: int) -> dict:
             "SELECT * FROM orders WHERE order_id = ?", (order_id,)               # parameter, no f-string
         ).fetchone()
     if row is None:
-        return {"error": f"Order {order_id} not found"}
+        return {"error": f"Order {order_id} not found. Ask the customer to check the order number."}
 
     order = dict(row)
     # Dates and the return decision are computed in code, not by the LLM
@@ -50,6 +50,8 @@ def run_tool(choice: dict) -> dict:
         if name == "get_order":
             return get_order(int(args["order_id"]))        # must be an integer
         return search_policy(str(args["query"]))          # must be text
-    except (KeyError, ValueError, TypeError) as err:
-        return {"error": f"Invalid arguments for {name}: {err}"}
+    except (KeyError, ValueError, TypeError):
+        if name == "get_order":
+            return {"error": "No valid order number given. Ask the customer for their order number."}
+        return {"error": f"Invalid arguments for {name}."}
 
