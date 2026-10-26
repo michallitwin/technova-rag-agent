@@ -1,9 +1,10 @@
 import sqlite3
 from pathlib import Path
+from src.config import settings
 
-DB_PATH = Path("data/technova.db")
 
-# Sample orders; today in this project is 2026-10-25
+settings.db_path.parent.mkdir(parents=True, exist_ok=True)
+
 ORDERS = [
     # (order_id, customer, product, total_usd, order_date, delivery_date, status)
     (1041, "Anna Kowalski", "Wireless headphones", 59.99, "2026-09-15", "2026-09-18", "delivered"),
@@ -17,8 +18,8 @@ ORDERS = [
 
 def create_db():
     """Create the orders table and fill it with sample data (rebuilt from scratch each run)."""
-    DB_PATH.parent.mkdir(exist_ok=True)
-    with sqlite3.connect(DB_PATH) as conn:
+    settings.db_path.parent.mkdir(exist_ok=True)
+    with sqlite3.connect(settings.db_path) as conn:
         conn.execute("DROP TABLE IF EXISTS orders")            # start clean every time
         conn.execute("""
             CREATE TABLE orders (
@@ -32,7 +33,7 @@ def create_db():
             )
         """)
         conn.executemany("INSERT INTO orders VALUES (?, ?, ?, ?, ?, ?, ?)", ORDERS)
-    print(f"Created {DB_PATH} with {len(ORDERS)} orders")
+    print(f"Created {settings.db_path} with {len(ORDERS)} orders")
 
 
 if __name__ == "__main__":

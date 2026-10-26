@@ -43,8 +43,3 @@ def run_tool(choice: dict) -> dict:
     except (KeyError, ValueError, TypeError) as err:
         return {"error": f"Invalid arguments for {name}: {err}"}
 
-
-
-if __name__ == "__main__":
-    print(get_order(1042))
-    print(get_order(9999))
