@@ -1,12 +1,11 @@
 import argparse
 import json
 import logging
-from datetime import date
 from string import Template
 
 from src.agent.answer import answer_from_results
 from src.agent.tools import run_tool
-from src.config import load_prompt, settings
+from src.config import current_date, load_prompt, settings
 from src.llm.client import ask_ollama_json
 
 logger = logging.getLogger(__name__)
@@ -17,7 +16,7 @@ INVALID_JSON_ERROR = {"error": "Your reply was not valid JSON. Reply with one JS
 def build_system_prompt() -> str:
     """Fill the system prompt template with today's date and the tool descriptions."""
     template = Template(load_prompt("react_system"))
-    return template.substitute(today=date.today().isoformat(), tools=load_prompt("tools"))
+    return template.substitute(today=current_date().isoformat(), tools=load_prompt("tools"))
 
 
 def build_prompt(question: str, steps: list[dict]) -> str:

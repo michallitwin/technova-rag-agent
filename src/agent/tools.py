@@ -1,7 +1,8 @@
 import sqlite3
-from src.rag.pipeline import search_db
 from datetime import date, timedelta
-from src.config import settings
+
+from src.config import current_date, settings
+from src.rag.pipeline import search_db
 
 
 def get_order(order_id: int) -> dict:
@@ -17,7 +18,7 @@ def get_order(order_id: int) -> dict:
     order = dict(row)
     # Dates and the return decision are computed in code, not by the LLM
     if order["delivery_date"]:
-        today = date.today()
+        today = current_date()
         delivered = date.fromisoformat(order["delivery_date"])
         deadline = delivered + timedelta(days=settings.return_window_days)
         order["days_since_delivery"] = (today - delivered).days

@@ -1,6 +1,7 @@
 """Central configuration. Every value can be overridden with an environment variable."""
 import os
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 
 
@@ -27,7 +28,7 @@ class Settings:
 
     # Business rules (decided in code, not by the LLM)
     return_window_days: int = int(os.getenv("RETURN_WINDOW_DAYS", "30"))
-
+    today_override: str | None = os.getenv("TODAY") or None
 
 settings = Settings()
 
@@ -35,3 +36,10 @@ settings = Settings()
 def load_prompt(name: str) -> str:
     """Read a prompt template from the prompts directory (e.g. config/prompts/tools.txt)."""
     return (settings.prompts_dir / f"{name}.txt").read_text(encoding="utf-8").strip()
+
+
+def current_date() -> date:
+    """Return the frozen date from TODAY if set, otherwise the real date."""
+    if settings.today_override:
+        return date.fromisoformat(settings.today_override)
+    return date.today()

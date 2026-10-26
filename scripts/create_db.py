@@ -1,7 +1,6 @@
 import sqlite3
-from pathlib import Path
-from src.config import settings
 
+from src.config import settings
 
 settings.db_path.parent.mkdir(parents=True, exist_ok=True)
 

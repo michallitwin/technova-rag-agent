@@ -4,8 +4,6 @@ from sentence_transformers import SentenceTransformer
 from src.config import load_prompt, settings
 from src.llm.client import ask_ollama
 
-
-
 model = SentenceTransformer(settings.embedding_model)
 client = chromadb.PersistentClient(path=settings.chroma_path)
 collection = client.get_or_create_collection(
