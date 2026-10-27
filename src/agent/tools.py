@@ -4,6 +4,11 @@ from datetime import date, timedelta
 from src.config import current_date, settings
 from src.rag.pipeline import search_db
 
+NO_POLICY_INFO = {
+    "chunks": [],
+    "note": "No relevant information in the store policy. Tell the customer you don't have this information.",
+}
+
 
 def get_order(order_id: int) -> dict:
     """Return one order as a dict, or an error dict if it does not exist. Read-only."""
@@ -33,10 +38,14 @@ def get_order(order_id: int) -> dict:
 
 
 def search_policy(query: str) -> dict:
-    """Search the store policy documents; return the best chunks with their sources."""
-    results = search_db(query)
-    return {"chunks": [{"source": f"{src} / {sec}", "text": doc} for sec, src, sim, doc in results]}
-
+    """Search the store policy; keep only chunks similar enough to the query."""
+    chunks = []
+    for section, source, similarity, text in search_db(query):
+        if similarity >= settings.min_similarity:          # drop weakly related paragraphs
+            chunks.append({"source": f"{source} / {section}", "text": text})
+    if not chunks:
+        return NO_POLICY_INFO                               # nothing relevant -> tell the model what to do
+    return {"chunks": chunks}
 
 TOOLS = {"search_policy": search_policy, "get_order": get_order}
 

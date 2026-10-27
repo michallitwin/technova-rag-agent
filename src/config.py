@@ -17,11 +17,14 @@ class Settings:
     chroma_path: str = os.getenv("CHROMA_PATH", "chroma_db")
     chroma_collection: str = os.getenv("CHROMA_COLLECTION", "technova_docs")
     top_k: int = int(os.getenv("TOP_K", "2"))
+    min_similarity: float = float(os.getenv("MIN_SIMILARITY", "0.35"))
 
     # Data and prompts
     docs_dir: Path = Path(os.getenv("DOCS_DIR", "data/docs"))
     db_path: Path = Path(os.getenv("DB_PATH", "data/technova.db"))
     prompts_dir: Path = Path(os.getenv("PROMPTS_DIR", "config/prompts"))
+    eval_set_path: Path = Path(os.getenv("EVAL_SET_PATH", "data/eval/golden_set.json"))
+    eval_results_dir: Path = Path(os.getenv("EVAL_RESULTS_DIR", "data/eval/results"))
 
     # Agent
     agent_max_steps: int = int(os.getenv("AGENT_MAX_STEPS", "4"))

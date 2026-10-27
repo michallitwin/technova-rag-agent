@@ -1,0 +1,862 @@
+{
+  "date": "2026-10-26",
+  "model": "llama3.2",
+  "top_k": 2,
+  "hit_at_k": 1.0,
+  "agents": {
+    "baseline": {
+      "summary": {
+        "accuracy": 0.67,
+        "tools_ok": 0.77,
+        "avg_steps": 1.0,
+        "forced_rate": 0.0,
+        "avg_latency_s": 4.58,
+        "accuracy_by_category": {
+          "policy": 0.9,
+          "order": 1.0,
+          "mixed": 0.57,
+          "no_answer": 0.0,
+          "missing_info": 0.33
+        }
+      },
+      "rows": [
+        {
+          "id": "P01",
+          "category": "policy",
+          "answer": "The warranty period is 24 months.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 8.89
+        },
+        {
+          "id": "P02",
+          "category": "policy",
+          "answer": "The standard courier delivery takes 1 to 3 business days and costs $5.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.43
+        },
+        {
+          "id": "P03",
+          "category": "policy",
+          "answer": "Delivery typically takes 1 to 3 business days.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.39
+        },
+        {
+          "id": "P04",
+          "category": "policy",
+          "answer": "Your order will ship on the same business day if it's placed before 2 PM.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.45
+        },
+        {
+          "id": "P05",
+          "category": "policy",
+          "answer": "According to the store policy, the customer pays for return shipping, unless the product is damaged.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.47
+        },
+        {
+          "id": "P06",
+          "category": "policy",
+          "answer": "We accept credit cards, PayPal, and bank transfers.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.39
+        },
+        {
+          "id": "P07",
+          "category": "policy",
+          "answer": "It takes 14 days to process a complaint.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.39
+        },
+        {
+          "id": "P08",
+          "category": "policy",
+          "answer": "A returned product must be unused and in its original packaging.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.37
+        },
+        {
+          "id": "P09",
+          "category": "policy",
+          "answer": "To report a defect, you can fill in the complaint form and attach the proof of purchase.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.43
+        },
+        {
+          "id": "P10",
+          "category": "policy",
+          "answer": "After the payment is received.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.37
+        },
+        {
+          "id": "O01",
+          "category": "order",
+          "answer": "The status of order 1043 is \"shipped\".",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.41
+        },
+        {
+          "id": "O02",
+          "category": "order",
+          "answer": "The status of order 1046 is \"processing\".",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.37
+        },
+        {
+          "id": "O03",
+          "category": "order",
+          "answer": "You ordered a Laptop stand.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.36
+        },
+        {
+          "id": "O04",
+          "category": "order",
+          "answer": "The total cost of order 1042 was $129.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.39
+        },
+        {
+          "id": "O05",
+          "category": "order",
+          "answer": "According to the order information, order 1044 was delivered on October 20, 2026.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.43
+        },
+        {
+          "id": "O06",
+          "category": "order",
+          "answer": "Yes, order 1045 was cancelled.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.36
+        },
+        {
+          "id": "M01",
+          "category": "mixed",
+          "answer": "Yes, you can still return order 1042, as the return window is open until November 9th, 2026.",
+          "correct": true,
+          "tools_ok": false,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.47
+        },
+        {
+          "id": "M02",
+          "category": "mixed",
+          "answer": "You are no longer able to return order 1041 as the return window has closed.",
+          "correct": false,
+          "tools_ok": false,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.45
+        },
+        {
+          "id": "M03",
+          "category": "mixed",
+          "answer": "You can return order 1044 until November 19, 2026.",
+          "correct": true,
+          "tools_ok": false,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.4
+        },
+        {
+          "id": "M04",
+          "category": "mixed",
+          "answer": "According to the order details, order 1044 did not get free delivery. The total cost of the order is $85.50.",
+          "correct": true,
+          "tools_ok": false,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.46
+        },
+        {
+          "id": "M05",
+          "category": "mixed",
+          "answer": "The delivery date for order 1043 is null, which means there is no delivery cost associated with this order.",
+          "correct": false,
+          "tools_ok": false,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.43
+        },
+        {
+          "id": "M06",
+          "category": "mixed",
+          "answer": "According to the order details, order 1041 did not qualify for free delivery. The total USD amount is $59.99, which is above the free delivery threshold.",
+          "correct": true,
+          "tools_ok": false,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.52
+        },
+        {
+          "id": "M07",
+          "category": "mixed",
+          "answer": "According to the order details, the smartwatch from order 1042 is no longer under warranty since it has been delivered.",
+          "correct": false,
+          "tools_ok": false,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.46
+        },
+        {
+          "id": "N01",
+          "category": "no_answer",
+          "answer": "Yes, we have a store in Krakow, and you can find our store policy and delivery information on our website.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.46
+        },
+        {
+          "id": "N02",
+          "category": "no_answer",
+          "answer": "Yes, we do ship to Japan. Our standard courier delivery takes 1 to 3 business days and costs $5, and delivery is free for orders over $70.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.55
+        },
+        {
+          "id": "N03",
+          "category": "no_answer",
+          "answer": "Our store hours are not specified, but we do offer delivery options. Orders placed before 2:00 PM are shipped on the same business day, and standard courier delivery takes 1 to 3 business days.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.54
+        },
+        {
+          "id": "N04",
+          "category": "no_answer",
+          "answer": "Yes, according to our store policy, all electronic devices, including iPhones, have a 24-month warranty.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.45
+        },
+        {
+          "id": "E01",
+          "category": "missing_info",
+          "answer": "I don't know what Emma Brown ordered, as the order with the ID 12345 was not found in our system.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.45
+        },
+        {
+          "id": "E02",
+          "category": "missing_info",
+          "answer": "I'm not sure where your order is, but I can tell you that we have a store policy that mentions processing times for orders.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.48
+        },
+        {
+          "id": "E03",
+          "category": "missing_info",
+          "answer": "I don't know when order 9999 will arrive, as the order was not found. Could you please check the order number and I'll be happy to help you with your inquiry?",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.5
+        }
+      ]
+    },
+    "react": {
+      "summary": {
+        "accuracy": 0.7,
+        "tools_ok": 1.0,
+        "avg_steps": 2.27,
+        "forced_rate": 0.6,
+        "avg_latency_s": 8.42,
+        "accuracy_by_category": {
+          "policy": 0.8,
+          "order": 1.0,
+          "mixed": 0.57,
+          "no_answer": 0.0,
+          "missing_info": 1.0
+        }
+      },
+      "rows": [
+        {
+          "id": "P01",
+          "category": "policy",
+          "answer": "The warranty period is 24 months.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": true,
+          "latency_s": 6.61
+        },
+        {
+          "id": "P02",
+          "category": "policy",
+          "answer": "Delivery costs $5.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy",
+            "search_policy"
+          ],
+          "steps": 2,
+          "forced": true,
+          "latency_s": 8.76
+        },
+        {
+          "id": "P03",
+          "category": "policy",
+          "answer": "Standard courier delivery takes 1 to 3 business days.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy",
+            "search_policy"
+          ],
+          "steps": 2,
+          "forced": true,
+          "latency_s": 8.84
+        },
+        {
+          "id": "P04",
+          "category": "policy",
+          "answer": "Your order will ship on the same business day if you place it before 2:00 PM.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy",
+            "search_policy",
+            "search_policy"
+          ],
+          "steps": 3,
+          "forced": true,
+          "latency_s": 11.24
+        },
+        {
+          "id": "P05",
+          "category": "policy",
+          "answer": "The customer pays for return shipping cost, unless the product is damaged.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy",
+            "get_order"
+          ],
+          "steps": 2,
+          "forced": false,
+          "latency_s": 6.66
+        },
+        {
+          "id": "P06",
+          "category": "policy",
+          "answer": "We accept credit cards, PayPal, and bank transfers.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy",
+            "search_policy",
+            "search_policy",
+            "search_policy"
+          ],
+          "steps": 4,
+          "forced": true,
+          "latency_s": 10.97
+        },
+        {
+          "id": "P07",
+          "category": "policy",
+          "answer": "It takes 14 days to process a complaint.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": true,
+          "latency_s": 6.61
+        },
+        {
+          "id": "P08",
+          "category": "policy",
+          "answer": "The product must be unused and in its original packaging.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy",
+            "search_policy",
+            "get_order"
+          ],
+          "steps": 3,
+          "forced": false,
+          "latency_s": 8.83
+        },
+        {
+          "id": "P09",
+          "category": "policy",
+          "answer": "Please provide your order number so I can assist you further.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy",
+            "search_policy",
+            "get_order"
+          ],
+          "steps": 3,
+          "forced": false,
+          "latency_s": 8.81
+        },
+        {
+          "id": "P10",
+          "category": "policy",
+          "answer": "After the payment is received.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy",
+            "search_policy",
+            "search_policy"
+          ],
+          "steps": 3,
+          "forced": true,
+          "latency_s": 10.99
+        },
+        {
+          "id": "O01",
+          "category": "order",
+          "answer": "The status of order 1043 is \"shipped\".",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy",
+            "search_policy"
+          ],
+          "steps": 3,
+          "forced": true,
+          "latency_s": 11.05
+        },
+        {
+          "id": "O02",
+          "category": "order",
+          "answer": "The status of order 1046 is \"processing\".",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy"
+          ],
+          "steps": 2,
+          "forced": true,
+          "latency_s": 8.76
+        },
+        {
+          "id": "O03",
+          "category": "order",
+          "answer": "You ordered a Laptop stand.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy",
+            "search_policy",
+            "search_policy"
+          ],
+          "steps": 4,
+          "forced": true,
+          "latency_s": 10.93
+        },
+        {
+          "id": "O04",
+          "category": "order",
+          "answer": "The Smartwatch order 1042 costs $129.00, and standard courier delivery costs $5.00.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy",
+            "search_policy"
+          ],
+          "steps": 3,
+          "forced": false,
+          "latency_s": 8.87
+        },
+        {
+          "id": "O05",
+          "category": "order",
+          "answer": "According to the order details, order 1044 was delivered on October 20, 2026.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy"
+          ],
+          "steps": 2,
+          "forced": true,
+          "latency_s": 8.83
+        },
+        {
+          "id": "O06",
+          "category": "order",
+          "answer": "Yes, order 1045 was cancelled.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy"
+          ],
+          "steps": 2,
+          "forced": false,
+          "latency_s": 6.57
+        },
+        {
+          "id": "M01",
+          "category": "mixed",
+          "answer": "Yes, John Smith can return the Smartwatch within 30 days of receiving the delivery, which is until 2026-11-07. The customer pays the return shipping cost, unless the product is damaged.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy"
+          ],
+          "steps": 2,
+          "forced": false,
+          "latency_s": 6.71
+        },
+        {
+          "id": "M02",
+          "category": "mixed",
+          "answer": "The return window for order 1041 has closed, as indicated by the order's return status. According to TechNova's store policy, returns are only possible within 30 days of delivery, which in this case is before the return window closed on 2026-10-18.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy"
+          ],
+          "steps": 2,
+          "forced": false,
+          "latency_s": 6.81
+        },
+        {
+          "id": "M03",
+          "category": "mixed",
+          "answer": "You can return order 1044 until 2026-11-19.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy"
+          ],
+          "steps": 2,
+          "forced": false,
+          "latency_s": 6.65
+        },
+        {
+          "id": "M04",
+          "category": "mixed",
+          "answer": "Yes, order 1044 is eligible for free delivery since the total order value is $85.5, which is over $70.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy"
+          ],
+          "steps": 2,
+          "forced": false,
+          "latency_s": 6.67
+        },
+        {
+          "id": "M05",
+          "category": "mixed",
+          "answer": "The delivery cost for order 1043 is $5.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy",
+            "search_policy"
+          ],
+          "steps": 3,
+          "forced": true,
+          "latency_s": 11.07
+        },
+        {
+          "id": "M06",
+          "category": "mixed",
+          "answer": "Yes, order 1041 qualified for free delivery because the total order amount is $59.99, which is over $70.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy"
+          ],
+          "steps": 2,
+          "forced": false,
+          "latency_s": 6.68
+        },
+        {
+          "id": "M07",
+          "category": "mixed",
+          "answer": "According to the store policy, all electronic devices have a 24-month warranty. Since the order was placed on October 7, 2026, and the product stopped working, it is still within the warranty period.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy",
+            "get_order"
+          ],
+          "steps": 2,
+          "forced": true,
+          "latency_s": 8.94
+        },
+        {
+          "id": "N01",
+          "category": "no_answer",
+          "answer": "I don't have a store in Krakow.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy",
+            "search_policy"
+          ],
+          "steps": 2,
+          "forced": true,
+          "latency_s": 8.84
+        },
+        {
+          "id": "N02",
+          "category": "no_answer",
+          "answer": "Yes, we do ship to Japan. Our standard courier delivery takes 1 to 3 business days and costs $5, and delivery is free for orders over $70.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": true,
+          "latency_s": 6.75
+        },
+        {
+          "id": "N03",
+          "category": "no_answer",
+          "answer": "Our store hours are not specified, but we do offer delivery options. Orders placed before 2:00 PM are shipped on the same business day, and standard courier delivery takes 1 to 3 business days.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy"
+          ],
+          "steps": 1,
+          "forced": true,
+          "latency_s": 6.79
+        },
+        {
+          "id": "N04",
+          "category": "no_answer",
+          "answer": "Yes, according to our store policy, we do sell iPhones. You can find more information about our warranty and return policies on our store policy page.",
+          "correct": false,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy",
+            "search_policy"
+          ],
+          "steps": 2,
+          "forced": true,
+          "latency_s": 8.9
+        },
+        {
+          "id": "E01",
+          "category": "missing_info",
+          "answer": "Please provide the order number so I can look up the order for Emma Brown.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order"
+          ],
+          "steps": 1,
+          "forced": false,
+          "latency_s": 4.4
+        },
+        {
+          "id": "E02",
+          "category": "missing_info",
+          "answer": "I don't know. Please provide your order number so I can help you with the location of your order.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "search_policy",
+            "search_policy",
+            "get_order"
+          ],
+          "steps": 3,
+          "forced": false,
+          "latency_s": 8.86
+        },
+        {
+          "id": "E03",
+          "category": "missing_info",
+          "answer": "I don't know the delivery time for order 9999. The order was not found, and I couldn't retrieve the information from our policies.",
+          "correct": true,
+          "tools_ok": true,
+          "tools_used": [
+            "get_order",
+            "search_policy",
+            "search_policy"
+          ],
+          "steps": 3,
+          "forced": true,
+          "latency_s": 11.12
+        }
+      ]
+    }
+  }
+}
