@@ -31,7 +31,12 @@ class Settings:
 
     # Business rules (decided in code, not by the LLM)
     return_window_days: int = int(os.getenv("RETURN_WINDOW_DAYS", "30"))
+    free_delivery_threshold: float = float(os.getenv("FREE_DELIVERY_THRESHOLD", "70"))
+    delivery_fee: float = float(os.getenv("DELIVERY_FEE", "5"))
+
+    # Evaluation: freeze "today" (YYYY-MM-DD) so date-based answers are reproducible
     today_override: str | None = os.getenv("TODAY") or None
+
 
 settings = Settings()
 

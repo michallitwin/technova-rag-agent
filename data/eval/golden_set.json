@@ -97,15 +97,13 @@
     "expected_section": "Payments",
     "expected_facts": [
       [
-        "card",
-        "cards"
+        "card"
       ],
       [
         "PayPal"
       ],
       [
-        "bank transfer",
-        "bank transfers"
+        "bank transfer"
       ]
     ]
   },
@@ -417,9 +415,6 @@
         "don't know",
         "do not know",
         "don't have information",
-        "don't have this information",
-        "don't have any information",
-        "do not have information",
         "no information",
         "not able to find",
         "couldn't find",
@@ -440,9 +435,6 @@
         "don't know",
         "do not know",
         "don't have information",
-        "don't have this information",
-        "don't have any information",
-        "do not have information",
         "no information",
         "not able to find",
         "couldn't find",
@@ -463,9 +455,6 @@
         "don't know",
         "do not know",
         "don't have information",
-        "don't have this information",
-        "don't have any information",
-        "do not have information",
         "no information",
         "not able to find",
         "couldn't find",
@@ -486,9 +475,6 @@
         "don't know",
         "do not know",
         "don't have information",
-        "don't have this information",
-        "don't have any information",
-        "do not have information",
         "no information",
         "not able to find",
         "couldn't find",
@@ -538,5 +524,13 @@
         "check the order number"
       ]
     ]
+  },
+  {
+    "id": "M08",
+    "category": "mixed",
+    "question": "Did order 1047 get free delivery?",
+    "expected_tools": ["get_order"],
+    "expected_section": null,
+    "expected_facts": [["no", "did not", "didn't", "not free", "$5"]]
   }
 ]

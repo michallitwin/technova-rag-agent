@@ -34,6 +34,14 @@ def get_order(order_id: int) -> dict:
             if order["return_window_open"]
             else f"Return NOT possible: the return window closed on {deadline.isoformat()}."
         )
+    # Delivery fee is decided in code, not by the LLM
+    total = order["total_usd"]
+    threshold = settings.free_delivery_threshold
+    fee = settings.delivery_fee
+    if total > threshold:
+        order["delivery_status"] = f"Free delivery: order total ${total:.2f} is over ${threshold:.0f}."
+    else:
+        order["delivery_status"] = f"Delivery cost ${fee:.0f}: order total ${total:.2f} is not over ${threshold:.0f}."
     return order
 
 

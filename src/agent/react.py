@@ -25,7 +25,6 @@ def build_prompt(question: str, steps: list[dict]) -> str:
     for i, step in enumerate(steps, start=1):
         lines.append(f"Step {i} call: {json.dumps(step['call'])}")
         lines.append(f"Step {i} result: {json.dumps(step['result'])}")
-    lines.append("What is your next step? Reply with one JSON object.")
     return "\n".join(lines)
 
 
@@ -64,8 +63,9 @@ def run_agent(question: str, max_steps: int = settings.agent_max_steps) -> dict:
             logger.info("Step %d: final answer", step_no)
             return {"answer": decision["final_answer"], "steps": steps, "forced": False}
 
-        if any(step["call"] == decision for step in steps):
-            logger.info("Step %d: repeated call -> forcing final answer", step_no)
+        used_tools = [step["call"]["tool"] for step in steps if step["call"]]
+        if decision.get("tool") in used_tools:
+            logger.info("Step %d: tool already used -> forcing final answer", step_no)
             break
 
         result = run_tool(decision)

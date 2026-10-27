@@ -12,6 +12,7 @@ ORDERS = [
     (1044, "Piotr Nowak", "Bluetooth speaker", 85.50, "2026-10-17", "2026-10-20", "delivered"),
     (1045, "Emma Brown", "Laptop stand", 34.00, "2026-10-12", None, "cancelled"),
     (1046, "Lukas Meyer", "Mechanical keyboard", 99.90, "2026-10-24", None, "processing"),
+    (1047, "Sophie Martin", "Webcam", 70.00, "2026-10-21", "2026-10-23", "delivered"),
 ]
 
 
