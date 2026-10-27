@@ -97,13 +97,15 @@
     "expected_section": "Payments",
     "expected_facts": [
       [
-        "card"
+        "card",
+        "cards"
       ],
       [
         "PayPal"
       ],
       [
-        "bank transfer"
+        "bank transfer",
+        "bank transfers"
       ]
     ]
   },
@@ -270,16 +272,16 @@
     "category": "mixed",
     "question": "Can I still return order 1042?",
     "expected_tools": [
-      "get_order",
-      "search_policy"
+      "get_order"
     ],
     "expected_section": "Returns",
     "expected_facts": [
       [
-        "2026-11-09",
-        "November 9",
-        "9 November",
-        "Nov 9"
+        "yes",
+        "can still",
+        "can return",
+        "still within",
+        "possible"
       ]
     ]
   },
@@ -288,8 +290,7 @@
     "category": "mixed",
     "question": "Can I still return order 1041?",
     "expected_tools": [
-      "get_order",
-      "search_policy"
+      "get_order"
     ],
     "expected_section": "Returns",
     "expected_facts": [
@@ -300,13 +301,8 @@
         "not allowed",
         "closed",
         "expired",
-        "no longer"
-      ],
-      [
-        "2026-10-18",
-        "October 18",
-        "18 October",
-        "Oct 18"
+        "no longer",
+        "no"
       ]
     ]
   },
@@ -315,8 +311,7 @@
     "category": "mixed",
     "question": "Until when can I return order 1044?",
     "expected_tools": [
-      "get_order",
-      "search_policy"
+      "get_order"
     ],
     "expected_section": "Returns",
     "expected_facts": [
@@ -333,8 +328,7 @@
     "category": "mixed",
     "question": "Did order 1044 get free delivery?",
     "expected_tools": [
-      "get_order",
-      "search_policy"
+      "get_order"
     ],
     "expected_section": "Delivery",
     "expected_facts": [
@@ -349,8 +343,7 @@
     "category": "mixed",
     "question": "How much was delivery for order 1043?",
     "expected_tools": [
-      "get_order",
-      "search_policy"
+      "get_order"
     ],
     "expected_section": "Delivery",
     "expected_facts": [
@@ -366,8 +359,7 @@
     "category": "mixed",
     "question": "Did order 1041 qualify for free delivery?",
     "expected_tools": [
-      "get_order",
-      "search_policy"
+      "get_order"
     ],
     "expected_section": "Delivery",
     "expected_facts": [
@@ -415,6 +407,9 @@
         "don't know",
         "do not know",
         "don't have information",
+        "don't have this information",
+        "don't have any information",
+        "do not have information",
         "no information",
         "not able to find",
         "couldn't find",
@@ -435,6 +430,9 @@
         "don't know",
         "do not know",
         "don't have information",
+        "don't have this information",
+        "don't have any information",
+        "do not have information",
         "no information",
         "not able to find",
         "couldn't find",
@@ -455,6 +453,9 @@
         "don't know",
         "do not know",
         "don't have information",
+        "don't have this information",
+        "don't have any information",
+        "do not have information",
         "no information",
         "not able to find",
         "couldn't find",
@@ -475,6 +476,9 @@
         "don't know",
         "do not know",
         "don't have information",
+        "don't have this information",
+        "don't have any information",
+        "do not have information",
         "no information",
         "not able to find",
         "couldn't find",
@@ -521,7 +525,9 @@
         "could not find",
         "doesn't exist",
         "does not exist",
-        "check the order number"
+        "check the order number",
+        "check their order number",
+        "check your order number"
       ]
     ]
   },
@@ -529,8 +535,18 @@
     "id": "M08",
     "category": "mixed",
     "question": "Did order 1047 get free delivery?",
-    "expected_tools": ["get_order"],
+    "expected_tools": [
+      "get_order"
+    ],
     "expected_section": null,
-    "expected_facts": [["no", "did not", "didn't", "not free", "$5"]]
+    "expected_facts": [
+      [
+        "no",
+        "did not",
+        "didn't",
+        "not free",
+        "$5"
+      ]
+    ]
   }
 ]

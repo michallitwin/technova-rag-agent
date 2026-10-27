@@ -39,9 +39,9 @@ def get_order(order_id: int) -> dict:
     threshold = settings.free_delivery_threshold
     fee = settings.delivery_fee
     if total > threshold:
-        order["delivery_status"] = f"Free delivery: order total ${total:.2f} is over ${threshold:.0f}."
+        order["delivery_status"] = f"Free delivery: order total ${total:.2f} is above ${threshold:.0f}."
     else:
-        order["delivery_status"] = f"Delivery cost ${fee:.0f}: order total ${total:.2f} is not over ${threshold:.0f}."
+        order["delivery_status"] = f"NOT free delivery: the customer paid ${fee:.0f} for delivery (free only above ${threshold:.0f}, order total ${total:.2f})."
     return order
 
 
