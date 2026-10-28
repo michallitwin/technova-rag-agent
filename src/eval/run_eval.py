@@ -3,11 +3,11 @@
 import argparse
 import json
 import logging
+import re
 import time
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
-import re
 
 from src.agent.agent import answer as baseline_agent
 from src.agent.react import run_agent as react_agent
