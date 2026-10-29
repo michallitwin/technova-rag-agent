@@ -1,5 +1,7 @@
 # TechNova RAG Agent
 
+![CI](https://github.com/michallitwin/technova-rag-agent/actions/workflows/ci.yml/badge.svg)
+
 A customer-support agent for **TechNova**, a fictional electronics store. It answers questions by combining two sources:
 
 - **store policy documents** (returns, delivery, warranty, payments) via RAG over a vector database,
@@ -7,7 +9,7 @@ A customer-support agent for **TechNova**, a fictional electronics store. It ans
 
 The agent is a hand-written **ReAct loop** (no framework): the LLM decides step by step which tool to call, the code runs it, and the result goes back into the history until the model can answer. Business decisions (return eligibility, delivery fee) are made **in code**; the LLM only explains them.
 
-> Status: MVP in progress. The agent and its evaluation work; API, Docker, tests and a LangGraph version are next (see [ROADMAP.md](ROADMAP.md)).
+> Status: MVP in progress. Agent, evaluation, FastAPI, Docker, tests and CI work; a Streamlit demo and a LangGraph version are next (see [ROADMAP.md](ROADMAP.md)).
 
 ## Results at a glance
 
@@ -75,6 +77,10 @@ User question
 | Evaluation | `src/eval/run_eval.py`, `data/eval/golden_set.json` |
 | Prompts (not in code) | `config/prompts/*.txt` |
 | Orders database seed script | `scripts/create_db.py` |
+| HTTP API (FastAPI) + request/response models | `src/api/main.py`, `src/api/schemas.py` |
+| Tests (API with a mocked agent, tools with a temp database) | `tests/` |
+| Container | `Dockerfile`, `docker-compose.yml` |
+| CI: Ruff + pytest on every push | `.github/workflows/ci.yml` |
 
 ## Quickstart
 
@@ -94,7 +100,35 @@ uv run --env-file .env python -m src.agent.react -v "..."   # show full tool res
 TODAY=2026-10-26 uv run --env-file .env python -m src.eval.run_eval
 
 uv run ruff check .                                     # lint
+uv run pytest -v                                        # tests (no LLM needed)
 ```
+
+### Run with Docker
+
+Ollama keeps running on your machine; the container reaches it via `host.docker.internal`.
+
+```bash
+cp .env.example .env
+docker compose up --build        # builds the DB and the vector index inside the image
+```
+
+Then open http://127.0.0.1:8000/docs.
+
+## API
+
+| Endpoint | Description |
+|----------|-------------|
+| `POST /api/ask` | `{"question": "..."}` → `{"answer", "steps", "forced"}`; 422 for invalid input, 503 if the LLM is unavailable |
+| `GET /api/health` | liveness check (used by the Docker healthcheck) |
+| `GET /api/eval/latest` | summary of the latest evaluation report (accuracy, hit@k, tool calls) |
+
+## Tests and CI
+
+- **Unit tests for tools** check the business decisions deterministically: an order of exactly $70.00 pays for delivery, a 38-day-old order cannot be returned, an unknown order returns an error, weak chunks are dropped. Each test builds its own small SQLite database in a temp folder and freezes "today".
+- **API tests** replace the agent with a mock, so they run in under a second and need no LLM or Ollama.
+- The embedding model and the Chroma collection are **lazy-loaded** (first use, not import), so tests and the API start fast; test time dropped from ~6.8 s to ~0.7 s.
+- **CI** (GitHub Actions) runs Ruff and pytest on every push to `main`.
+- Model quality is measured separately by the evaluation (real LLM calls); unit tests use mocks.
 
 ## Evaluation
 
@@ -167,7 +201,12 @@ What the history shows:
 | Sources appended from metadata | LLM writes citations | the small model ignored the citation format |
 | `upsert` with stable chunk IDs | `add` | idempotent indexing: re-running does not duplicate chunks |
 | Read-only SQL connection + `?` parameters | regular connection | no writes, no SQL injection |
-| Settings from env vars (`--env-file .env`) | hardcoded values | same code locally, in Docker and on AWS |
+| Settings from env vars (`--env-file .env`) | hardcoded values | same code locally, in Docker and on AWS: in Docker only `OLLAMA_URL` changes |
+| Lazy-loaded embedding model and Chroma | load at import | fast tests and API start; CI needs no model |
+| Mocked agent in API tests, real LLM only in evaluation | real LLM in all tests | fast, deterministic tests; quality is measured by the evaluation |
+| CPU-only PyTorch in Docker (uv index for Linux) | default PyTorch with CUDA | the service needs no GPU; much smaller image |
+| DB and vector index built inside the image, embedding model baked in (`HF_HUB_OFFLINE=1`) | build at container start | the container starts ready and makes no Hugging Face calls |
+| Pinned uv version in Docker and CI | `latest` | reproducible builds |
 
 ## What didn't work
 
@@ -176,11 +215,14 @@ What the history shows:
 - **Example bias.** The model copied values from the tool examples in the prompt (e.g. `get_order(1042)` for a question about another customer). Fixed with placeholders.
 - **Number comparison.** Three prompt versions did not stop wrong answers about the return window (0/3), and a boolean `return_window_open: false` was ignored too. A ready-made sentence fixed it: for a small model, the form of the data matters more than instructions.
 - **Too strong error message.** "Ask the customer for their order number" made the agent ask for an order number on plain policy questions ("How do I report a defect?") after an unnecessary `get_order` call. Fixed at the root by allowing each tool only once.
+- **Slow tests from import-time loading.** The API tests imported the RAG module, which loaded PyTorch and the embedding model on import (~6.8 s, and impossible in CI without the model). Fixed with lazy loading.
+- **Moved project, broken virtualenv.** After moving the repository folder, `uv run uvicorn` failed ("trampoline failed to canonicalize script path"): the `.venv` launchers kept the old path. Fixed by recreating `.venv` with `uv sync`.
 - **Grading errors in both directions.** Substring matching passed wrong answers (`no` inside `know`); whole-word matching then failed correct ones (`card` vs `cards`). Both fixed by checking failures by hand before trusting the numbers.
 
 ## Security and limitations
 
 - **No authentication in the MVP.** Anyone who knows an order number can see that order. In production, order lookups must be scoped to the logged-in customer: the customer ID comes from the session, never from text the user types to the LLM.
 - The agent also repeats the customer's name to whoever gives the order number.
+- `POST /api/ask` returns the full tool results in `steps` (useful for debugging and the demo). A customer-facing deployment should return only the answer and expose steps in a debug mode.
 - No search by customer name, on purpose (privacy). The agent asks for the order number instead.
 - Runs locally on a small model (`llama3.2`); some answers are incomplete (e.g. delivery cost without the free-delivery threshold).
