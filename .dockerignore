@@ -1,0 +1,10 @@
+.venv/
+.env
+.git/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+chroma_db/
+data/technova.db
+data/eval/results/
+*.pyc
