@@ -9,7 +9,7 @@ A customer-support agent for **TechNova**, a fictional electronics store. It ans
 
 The agent is a hand-written **ReAct loop** (no framework): the LLM decides step by step which tool to call, the code runs it, and the result goes back into the history until the model can answer. Business decisions (return eligibility, delivery fee) are made **in code**; the LLM only explains them.
 
-> > Status: MVP. Agent, evaluation, FastAPI, Docker, tests, CI and a Streamlit demo work; a LangGraph version is next (see [ROADMAP.md](ROADMAP.md)).
+> Status: MVP. Agent, evaluation, FastAPI, Docker, tests, CI and a Streamlit demo work; a LangGraph version is next (see [ROADMAP.md](ROADMAP.md)).
 
 ## Results at a glance
 
