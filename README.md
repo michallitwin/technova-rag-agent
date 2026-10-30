@@ -9,7 +9,7 @@ A customer-support agent for **TechNova**, a fictional electronics store. It ans
 
 The agent is a hand-written **ReAct loop** (no framework): the LLM decides step by step which tool to call, the code runs it, and the result goes back into the history until the model can answer. Business decisions (return eligibility, delivery fee) are made **in code**; the LLM only explains them.
 
-> Status: MVP in progress. Agent, evaluation, FastAPI, Docker, tests and CI work; a Streamlit demo and a LangGraph version are next (see [ROADMAP.md](ROADMAP.md)).
+> > Status: MVP. Agent, evaluation, FastAPI, Docker, tests, CI and a Streamlit demo work; a LangGraph version is next (see [ROADMAP.md](ROADMAP.md)).
 
 ## Results at a glance
 
@@ -95,6 +95,7 @@ uv run --env-file .env python -m scripts.create_db      # create the orders data
 uv run --env-file .env python -m src.rag.pipeline       # build the vector index
 uv run --env-file .env python -m src.agent.react "Can I still return order 1042?"
 uv run --env-file .env python -m src.agent.react -v "..."   # show full tool results
+uv run --env-file .env streamlit run src/ui/streamlit_app.py   # Streamlit demo
 
 # evaluation with a frozen date (results are saved to data/eval/results/)
 TODAY=2026-10-26 uv run --env-file .env python -m src.eval.run_eval
