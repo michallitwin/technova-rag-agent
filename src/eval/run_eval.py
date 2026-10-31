@@ -57,15 +57,10 @@ def tools_used(steps: list[dict]) -> list[str]:
 
 def retrieval_hit(question: str, expected_section: str | None) -> bool | None:
     """hit@k: is the expected policy section among the top-k chunks? None if not applicable."""
-    if (
-        expected_section is None
-    ):  # e.g. "What is the status of order 1043?" - no policy needed
+    if expected_section is None:  # e.g. "What is the status of order 1043?" - no policy needed
         return None
-
-    for section, source, similarity, text in search_db(question):  # top-k chunks
-        if section == expected_section:
-            return True  # found the right paragraph
-    return False  # right paragraph not among top-k
+    # right paragraph among the top-k chunks?
+    return any(section == expected_section for section, *_ in search_db(question))
 
 
 def evaluate_item(agent, item: dict) -> dict:
