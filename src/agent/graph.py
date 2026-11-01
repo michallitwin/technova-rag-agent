@@ -6,6 +6,7 @@ from urllib.parse import urlsplit
 from langchain_core.messages import SystemMessage
 from langchain_core.tools import tool
 from langchain_ollama import ChatOllama
+from langgraph.errors import GraphRecursionError
 from langgraph.graph import START, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
@@ -88,14 +89,18 @@ def build_graph():
     return builder.compile()
 
 
+def run_agent(graph, question: str) -> str:
+    """Ask the agent one question and return its answer (a polite fallback if it hits the step limit)."""
+    try:
+        result = graph.invoke(
+            {"messages": [{"role": "user", "content": question}]},
+            {"recursion_limit": 8},
+        )
+        return result["messages"][-1].content
+    except GraphRecursionError:
+        return "Sorry, I can't answer this. Please contact our support team."
+
+
 if __name__ == "__main__":
     graph = build_graph()
-    result = graph.invoke(
-        {
-            "messages": [
-                {"role": "user", "content": "Can I still return order 1042?"},
-            ]
-        }
-    )
-    for message in result["messages"]:
-        message.pretty_print()
+    print(run_agent(graph, "Can I still return order 1043?"))
