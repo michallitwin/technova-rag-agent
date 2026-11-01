@@ -17,6 +17,7 @@ PROMPT_PATH = Path(__file__).resolve().parents[2] / "config" / "prompts" / "grap
 
 # --- Tools: thin wrappers around src/agent/tools.py (business logic stays there) ---
 
+
 @tool
 def get_order(order_id: int) -> dict:
     """
@@ -27,6 +28,7 @@ def get_order(order_id: int) -> dict:
     in `return_status` and `delivery_status`; repeat them to the customer.
     """
     return store_tools.get_order(order_id)
+
 
 @tool
 def search_policy(query: str) -> dict:
@@ -84,3 +86,16 @@ def build_graph():
     builder.add_edge("tools", "agent")
 
     return builder.compile()
+
+
+if __name__ == "__main__":
+    graph = build_graph()
+    result = graph.invoke(
+        {
+            "messages": [
+                {"role": "user", "content": "Can I still return order 1042?"},
+            ]
+        }
+    )
+    for message in result["messages"]:
+        message.pretty_print()
