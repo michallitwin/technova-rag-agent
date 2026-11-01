@@ -6,6 +6,7 @@ from urllib.parse import urlsplit
 from langchain_core.messages import SystemMessage
 from langchain_core.tools import tool
 from langchain_ollama import ChatOllama
+from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.errors import GraphRecursionError
 from langgraph.graph import START, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
@@ -86,15 +87,18 @@ def build_graph():
     builder.add_conditional_edges("agent", tools_condition)
     builder.add_edge("tools", "agent")
 
-    return builder.compile()
+    return builder.compile(checkpointer=InMemorySaver())
 
 
-def run_agent(graph, question: str) -> str:
-    """Ask the agent one question and return its answer (a polite fallback if it hits the step limit)."""
+def run_agent(graph, question: str, thread_id: str) -> str:
+    """Ask the agent one question in a conversation thread and return its answer."""
     try:
         result = graph.invoke(
             {"messages": [{"role": "user", "content": question}]},
-            {"recursion_limit": 8},
+            {
+                "recursion_limit": 8,
+                "configurable": {"thread_id": thread_id},
+            },
         )
         return result["messages"][-1].content
     except GraphRecursionError:
@@ -103,4 +107,8 @@ def run_agent(graph, question: str) -> str:
 
 if __name__ == "__main__":
     graph = build_graph()
-    print(run_agent(graph, "Can I still return order 1043?"))
+    print(run_agent(graph, "What is the status of order 1043?", "customer-1"))
+    print(run_agent(graph, "Can I return it?", "customer-1"))
+    state = graph.get_state({"configurable": {"thread_id": "customer-1"}})
+    for message in state.values["messages"]:
+        message.pretty_print()
