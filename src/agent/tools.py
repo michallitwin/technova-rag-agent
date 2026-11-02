@@ -34,6 +34,9 @@ def get_order(order_id: int) -> dict:
             if order["return_window_open"]
             else f"Return NOT possible: the return window closed on {deadline.isoformat()}."
         )
+    else:
+        order["return_status"] = (
+            f"Not delivered yet: return possible within {settings.return_window_days} days after delivery.")
     # Delivery fee is decided in code, not by the LLM
     total = order["total_usd"]
     threshold = settings.free_delivery_threshold

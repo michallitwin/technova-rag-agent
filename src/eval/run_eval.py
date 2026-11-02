@@ -10,13 +10,14 @@ from datetime import datetime
 from pathlib import Path
 
 from src.agent.agent import answer as baseline_agent
+from src.agent.graph import run_graph_agent as graph_agent
 from src.agent.react import run_agent as react_agent
 from src.config import settings
 from src.rag.pipeline import search_db
 
 logger = logging.getLogger(__name__)
 
-AGENTS = {"baseline": baseline_agent, "react": react_agent}
+AGENTS = {"baseline": baseline_agent, "react": react_agent, "graph": graph_agent}
 METRICS = ["accuracy", "tools_ok", "avg_steps", "forced_rate", "avg_latency_s"]
 LABEL_WIDTH = 22  # width of the first column (metric name)
 COLUMN_WIDTH = 12  # width of each agent's column
@@ -57,15 +58,10 @@ def tools_used(steps: list[dict]) -> list[str]:
 
 def retrieval_hit(question: str, expected_section: str | None) -> bool | None:
     """hit@k: is the expected policy section among the top-k chunks? None if not applicable."""
-    if (
-        expected_section is None
-    ):  # e.g. "What is the status of order 1043?" - no policy needed
+    if expected_section is None:  # e.g. "What is the status of order 1043?" - no policy needed
         return None
-
-    for section, source, similarity, text in search_db(question):  # top-k chunks
-        if section == expected_section:
-            return True  # found the right paragraph
-    return False  # right paragraph not among top-k
+    # right paragraph among the top-k chunks?
+    return any(section == expected_section for section, *_ in search_db(question))
 
 
 def evaluate_item(agent, item: dict) -> dict:

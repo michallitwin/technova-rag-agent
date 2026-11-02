@@ -54,7 +54,7 @@ def search_db(query, k=settings.top_k):
     return [
         (m["section"], m["source"], round(1 - d, 2), doc)
         for doc, d, m in zip(
-            res["documents"][0], res["distances"][0], res["metadatas"][0]
+            res["documents"][0], res["distances"][0], res["metadatas"][0], strict=True
         )
     ]
 
