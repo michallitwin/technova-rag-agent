@@ -9,8 +9,8 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-from src.agent.graph import run_graph_agent as graph_agent
 from src.agent.agent import answer as baseline_agent
+from src.agent.graph import run_graph_agent as graph_agent
 from src.agent.react import run_agent as react_agent
 from src.config import settings
 from src.rag.pipeline import search_db
