@@ -9,6 +9,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
+from src.agent.graph import run_graph_agent as graph_agent
 from src.agent.agent import answer as baseline_agent
 from src.agent.react import run_agent as react_agent
 from src.config import settings
@@ -16,7 +17,7 @@ from src.rag.pipeline import search_db
 
 logger = logging.getLogger(__name__)
 
-AGENTS = {"baseline": baseline_agent, "react": react_agent}
+AGENTS = {"baseline": baseline_agent, "react": react_agent, "graph": graph_agent}
 METRICS = ["accuracy", "tools_ok", "avg_steps", "forced_rate", "avg_latency_s"]
 LABEL_WIDTH = 22  # width of the first column (metric name)
 COLUMN_WIDTH = 12  # width of each agent's column

@@ -1,7 +1,9 @@
 """TechNova support agent built with LangGraph (same tools as the hand-written ReAct loop)."""
 
+from functools import cache
 from pathlib import Path
 from urllib.parse import urlsplit
+from uuid import uuid4
 
 from langchain_core.messages import SystemMessage
 from langchain_core.tools import tool
@@ -38,8 +40,10 @@ def search_policy(query: str) -> dict:
     Search the TechNova store policy (returns, delivery, warranty, payments, reporting defects).
 
     Use this for general questions about store rules that do not need a specific order.
+    Write the query as a short policy topic such as "returns", "warranty" or "delivery",
+    without product names or order numbers.
     Returns matching policy fragments with their source, or a note that the policy has
-    no information on the topic; in that case tell the customer you don't have this information.
+    no information on the topic; in that case tell the customer you don't have this information. 
     """
     return store_tools.search_policy(query)
 
@@ -105,10 +109,33 @@ def run_agent(graph, question: str, thread_id: str) -> str:
         return "Sorry, I can't answer this. Please contact our support team."
 
 
+@cache
+def get_graph():
+    """Build the graph once and reuse it for every question."""
+    return build_graph()
+
+
+def run_graph_agent(question: str) -> dict:
+    """Run the LangGraph agent and return the same format as the ReAct agent (used by the evaluation)."""
+    graph = get_graph()
+    config = {"recursion_limit": 8, "configurable": {"thread_id": str(uuid4())}}
+    try:
+        result = graph.invoke({"messages": [{"role": "user", "content": question}]}, config)
+    except GraphRecursionError:
+        return {"answer": "Sorry, I can't answer this. Please contact our support team.", "steps": [], "forced": True}
+
+    steps = []
+    for message in result["messages"]:
+        for call in getattr(message, "tool_calls", []):
+            steps.append({"call": {"tool": call["name"], "args": call["args"]}})
+    return {"answer": result["messages"][-1].content, "steps": steps, "forced": False}
+
+
 if __name__ == "__main__":
     graph = build_graph()
-    print(run_agent(graph, "What is the status of order 1043?", "customer-1"))
-    print(run_agent(graph, "Can I return it?", "customer-1"))
-    state = graph.get_state({"configurable": {"thread_id": "customer-1"}})
+    print(run_agent(graph, "Can I still return order 1043?", "customer-a"))
+    print(run_agent(graph, "What is the status of order 1043?", "customer-b"))
+    print(run_agent(graph, "Can I return it?", "customer-b"))
+    state = graph.get_state({"configurable": {"thread_id": "customer-b"}})
     for message in state.values["messages"]:
         message.pretty_print()
