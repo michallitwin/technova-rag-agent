@@ -1,7 +1,7 @@
 [project]
 name = "technova-rag-agent"
 version = "0.1.0"
-description = "Add your description here"
+description = "Customer-support agent with RAG and SQL tools: hand-written ReAct loop vs LangGraph, with evaluation"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
