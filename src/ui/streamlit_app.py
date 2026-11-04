@@ -40,9 +40,11 @@ def render_sidebar() -> None:
     if summary is None:
         st.sidebar.warning("API not reachable or no evaluation report.")
         return
-    st.sidebar.metric("Accuracy (golden set)", f"{summary['accuracy']:.0%}")
     st.sidebar.metric("Retrieval hit@k", f"{summary['hit_at_k']:.0%}")
-    st.sidebar.metric("Avg. tool calls", summary["avg_steps"])
+    for name, agent in summary["agents"].items():
+        st.sidebar.subheader(name)
+        st.sidebar.metric("Accuracy (golden set)", f"{agent['accuracy']:.0%}")
+        st.sidebar.metric("Avg. tool calls", agent["avg_steps"])
     st.sidebar.caption(f"Model: {summary['model']} · report: {summary['report']}")
 
 

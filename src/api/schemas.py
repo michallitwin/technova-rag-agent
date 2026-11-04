@@ -43,11 +43,17 @@ class HealthResponse(BaseModel):
     status: str = "ok"
 
 
+class AgentSummary(BaseModel):
+    """Evaluation results of one agent."""
+
+    accuracy: float = Field(ge=0.0, le=1.0, description="Share of correct answers")
+    avg_steps: float = Field(ge=0.0, description="Average number of tool calls per question")
+
+
 class EvalSummaryResponse(BaseModel):
     """Summary of the latest evaluation on the golden set."""
 
     report: str = Field(description="File name of the evaluation report")
     model: str = Field(examples=["llama3.2"], description="LLM used in the evaluation")
     hit_at_k: float = Field(ge=0.0, le=1.0, description="Retrieval hit@k on policy questions")
-    accuracy: float = Field(ge=0.0, le=1.0, description="Share of correct answers of the ReAct agent")
-    avg_steps: float = Field(ge=0.0, description="Average number of tool calls per question")
+    agents: dict[str, AgentSummary] = Field(description="Results per agent, keyed by agent name")

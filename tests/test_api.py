@@ -1,5 +1,6 @@
 """API tests: the agent is mocked, so no LLM or Ollama is needed."""
 
+import json
 from dataclasses import replace
 
 import pytest
@@ -67,3 +68,23 @@ def test_eval_latest_404_without_reports(client, monkeypatch, tmp_path):
     monkeypatch.setattr(main, "settings", empty_settings)
     response = client.get("/api/eval/latest")
     assert response.status_code == 404
+
+
+def test_eval_latest_with_only_graph_agent(client, monkeypatch, tmp_path):
+    # 1. Fake report: only the "graph" agent, no "react"
+    report = {
+        "model": "llama3.2",
+        "hit_at_k": 1.0,
+        "agents": {
+            "graph": {"summary": {"accuracy": 0.94, "avg_steps": 1.0}},
+        },
+    }
+    (tmp_path / "20261104_1600.json").write_text(json.dumps(report), encoding="utf-8")
+
+    # 2. Point the API at the folder with this one report
+    settings_with_report = replace(main.settings, eval_results_dir=tmp_path)
+    monkeypatch.setattr(main, "settings", settings_with_report)
+
+    # 3. Call the endpoint and check the status code
+    response = client.get("/api/eval/latest")
+    assert response.status_code == 200
