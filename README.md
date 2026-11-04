@@ -113,7 +113,7 @@ uv run pytest -v           # tests (no LLM needed)
 |----------|-------------|
 | `POST /api/ask` | `{"question": "..."}` → `{"answer", "steps", "forced"}`; 422 for invalid input, 503 if the LLM is unavailable |
 | `GET /api/health` | liveness check (used by the Docker healthcheck) |
-| `GET /api/eval/latest` | summary of the latest evaluation report |
+| `GET /api/eval/latest` | latest evaluation report: hit@k and accuracy / tool calls **per agent** (e.g. ReAct loop and LangGraph); 404 if there is no report |
 
 ## Tests and CI
 
