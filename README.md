@@ -2,6 +2,8 @@
 
 ![CI](https://github.com/michallitwin/technova-rag-agent/actions/workflows/ci.yml/badge.svg)
 
+![Demo: the agent checks order 1042 and answers; the sidebar compares the ReAct loop and LangGraph](docs/demo.gif)
+
 A customer-support agent for **TechNova**, a fictional electronics store. It answers questions from two sources and decides on its own which one it needs:
 
 - **store policy documents** (returns, delivery, warranty, payments) through RAG over a vector database,
