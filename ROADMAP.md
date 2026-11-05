@@ -17,7 +17,7 @@
 - [ ] Citations checked against the retrieved chunks; tested "I don't have this information" answers
 - [ ] Streaming answers; latency p50/p95 (time to first token and full answer)
 - [ ] Tracing with Langfuse; token usage and cost per query in the evaluation report
-- [ ] Demo GIF in the README
+- [X] Demo GIF in the README
 
 ## Known issues
 - LangGraph agent sometimes answers order + policy questions from one tool (warranty for order 1042 without "24 months")
