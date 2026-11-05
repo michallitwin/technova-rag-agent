@@ -121,6 +121,7 @@ uv run pytest -v           # tests (no LLM needed)
 - **API tests** replace the agent with a mock, so they run in under a second.
 - The embedding model and Chroma are **lazy-loaded**, which cut test time from ~6.8 s to ~0.7 s and lets CI run without the model.
 - **CI** (GitHub Actions) runs Ruff and pytest on every push. Model quality is measured separately by the evaluation.
+- A regression test reproduces a fixed bug: a report with only the LangGraph agent used to crash `/api/eval/latest` (`KeyError`); the endpoint now reads whichever agents the report has.
 
 ## Evaluation
 

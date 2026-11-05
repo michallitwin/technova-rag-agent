@@ -24,7 +24,6 @@
 - Hallucination from related context: "Do you ship to Japan?" gets the Delivery section and a made-up "yes"
 - Memory is stored but not always used ("And when was it ordered?" searches the policy instead of the earlier `get_order` result)
 
-
 ## Later: AWS
 - [ ] Amazon Bedrock as the LLM, Titan embeddings, pgvector on RDS, deployment on ECS Fargate or App Runner
 - [ ] PostgreSQL checkpointer instead of in-memory conversation memory
