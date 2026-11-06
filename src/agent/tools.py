@@ -4,6 +4,8 @@ from datetime import date, timedelta
 from src.config import current_date, settings
 from src.rag.pipeline import search_db
 
+CANCELLED_STATUS = "cancelled"
+
 NO_POLICY_INFO = {
     "chunks": [],
     "note": "No relevant information in the store policy. Tell the customer you don't have this information.",
@@ -21,6 +23,13 @@ def get_order(order_id: int) -> dict:
         return {"error": f"Order {order_id} not found. Ask the customer to check the order number."}
 
     order = dict(row)
+
+    # Cancelled orders: no delivery and no return, so skip the date and fee logic
+    if order["status"] == CANCELLED_STATUS:
+        order["return_status"] = "Return NOT possible: the order was cancelled and never delivered."
+        order["delivery_status"] = "No delivery: the order was cancelled."
+        return order
+
     # Dates and the return decision are computed in code, not by the LLM
     if order["delivery_date"]:
         today = current_date()
@@ -36,7 +45,9 @@ def get_order(order_id: int) -> dict:
         )
     else:
         order["return_status"] = (
-            f"Not delivered yet: return possible within {settings.return_window_days} days after delivery.")
+            f"Not delivered yet: return possible within {settings.return_window_days} days after delivery."
+        )
+
     # Delivery fee is decided in code, not by the LLM
     total = order["total_usd"]
     threshold = settings.free_delivery_threshold
@@ -44,7 +55,10 @@ def get_order(order_id: int) -> dict:
     if total > threshold:
         order["delivery_status"] = f"Free delivery: order total ${total:.2f} is above ${threshold:.0f}."
     else:
-        order["delivery_status"] = f"NOT free delivery: the customer paid ${fee:.0f} for delivery (free only above ${threshold:.0f}, order total ${total:.2f})."
+        order["delivery_status"] = (
+            f"NOT free delivery: the customer paid ${fee:.0f} for delivery "
+            f"(free only above ${threshold:.0f}, order total ${total:.2f})."
+        )
     return order
 
 

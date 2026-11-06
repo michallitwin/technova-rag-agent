@@ -14,6 +14,7 @@ ORDERS = [
     (1043, "Maria Garcia", "USB-C charger", 19.99, "2026-10-23", None, "shipped"),
     (1044, "Piotr Nowak", "Bluetooth speaker", 85.50, "2026-10-18", "2026-10-20", "delivered"),
     (1047, "Sophie Martin", "Webcam", 70.00, "2026-10-21", "2026-10-23", "delivered"),
+    (1045, "Emma Brown", "Laptop stand", 34.00, "2026-10-12", None, "cancelled"),
 ]
 
 
@@ -72,3 +73,8 @@ def test_search_policy_drops_weak_chunks(monkeypatch):
 def test_run_tool_without_order_number_asks_for_it():
     result = tools.run_tool({"tool": "get_order", "args": {}})
     assert "order number" in result["error"]
+
+def test_cancelled_order_cannot_be_returned():
+    order = tools.get_order(1045)
+    assert order["return_status"].startswith("Return NOT possible")
+    assert order["delivery_status"].startswith("No delivery")

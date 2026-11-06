@@ -21,10 +21,12 @@ Golden set of 31 questions, `llama3.2` running locally, frozen date for reproduc
 |---|---|---|---|
 | **Correct answers** | 28/31 (90%) | **29/31 (94%)** | **29/31 (94%)** |
 | Tool calls per question | 1.0 | 1.13 | **1.0** |
-| Answers forced by the step limit | – | 23% | **0%** |
+| Forced answers (repeated tool or step limit) | – | 23% | **0%** |
 | Retrieval hit@2 | 100% | 100% | 100% |
 
-Both agents answer the same share of questions. LangGraph never hit the step limit and made fewer tool calls; the likely reason is native tool calling, which replaces the JSON the loop has to parse. Details are in [Evaluation](#evaluation).
+Both agents answer the same share of questions. LangGraph never hit the step limit and made fewer tool calls; one likely reason is native tool calling, which replaces the JSON the loop has to parse. Details are in [Evaluation](#evaluation).
+
+The 23% forced answers in the ReAct loop come from the one-call-per-tool rule: the model asks for the same tool again, the code blocks it and forces an answer from the context it already has. All 7 forced answers in the latest run were still correct. LangGraph has no such rule (only a recursion limit), so part of the 23% vs 0% gap comes from this difference.
 
 ## Example
 
@@ -172,7 +174,7 @@ ReAct and LangGraph were run on the same machine (both ~1.5 s per answer); the b
 
 - **v1 → v1b:** the first grader was too lenient. Fixing it lowered the scores but made them honest.
 - **v2:** the threshold was chosen from measured scores (answerable questions ≥ 0.40, unanswerable ≤ 0.30) and cut invented answers.
-- **v3:** one call per tool cut tool calls from 2.2 to 1.06 per question and latency from 8.1 s to 5.0 s.
+- **v3:** one call per tool cut tool calls from 2.2 to 1.06 per question and latency from 8.1 s to 5.0 s. Added a 31st question to test the edge case of an order of exactly $70.00 (the free-delivery threshold).
 - **v5:** the first LangGraph run scored 28/31, but one failure was a grading error ("November 19th" did not match "November 19"). A prompt rule meant to fix the warranty question broke a return question that had passed, so it was reverted.
 
 ### Limitations of the evaluation
@@ -192,7 +194,7 @@ ReAct and LangGraph were run on the same machine (both ~1.5 s per answer); the b
 | Similarity threshold for retrieved chunks | always pass top-k | weakly related paragraphs led to invented answers |
 | Tool description asks for short policy topics | free-form queries | "returning a USB-C charger" scored 0.30, "returns" scores above the 0.35 threshold |
 | Step limit with a fallback answer | stronger prompt only | a stricter prompt did not stop the loop; a rule in code always works |
-| Native tool calling in LangGraph | JSON in the prompt | no JSON to parse; 0% forced answers in the evaluation |
+| Native tool calling in LangGraph | JSON in the prompt | no JSON to parse; 0% forced answers in the evaluation (the graph has no one-call-per-tool rule) |
 | Frozen date (`TODAY`) for evaluation | real date | reproducible results |
 | Read-only SQL connection + `?` parameters | regular connection | no writes, no SQL injection |
 
@@ -216,3 +218,10 @@ Smaller choices: prompts live in `config/prompts/`, settings come from environme
 - No search by customer name, on purpose (privacy).
 - The conversation memory is in RAM (`InMemorySaver`) and disappears on restart; a database-backed checkpointer is needed in production.
 - Runs on a small local model (`llama3.2`), so some answers are incomplete.
+
+
+## Author
+
+**Michał Litwin** · [LinkedIn](https://www.linkedin.com/in/mlitwin1/) · [GitHub](https://github.com/michallitwin)
+
+Also see [PhishGuard Live](https://github.com/michallitwin/phishguard-live), a phishing-domain detector with FastAPI, Docker and CI.
