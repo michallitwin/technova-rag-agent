@@ -121,7 +121,7 @@ uv run pytest -v           # tests (no LLM needed)
 
 ## Tests and CI
 
-- **Tool tests** check the business decisions without an LLM: an order of exactly $70.00 pays for delivery, a 38-day-old order cannot be returned, an unknown order returns an error, weak chunks are dropped. Each test builds its own SQLite database and freezes "today".
+- **Tool tests** check the business decisions without an LLM: an order of exactly $70.00 pays for delivery, a 38-day-old order cannot be returned, a cancelled order cannot be returned, an unknown order returns an error, weak chunks are dropped. Each test builds its own SQLite database and freezes "today".
 - **API tests** replace the agent with a mock, so they run in under a second.
 - The embedding model and Chroma are **lazy-loaded**, which cut test time from ~6.8 s to ~0.7 s and lets CI run without the model.
 - **CI** (GitHub Actions) runs Ruff and pytest on every push. Model quality is measured separately by the evaluation.
@@ -210,6 +210,7 @@ Smaller choices: prompts live in `config/prompts/`, settings come from environme
 - **Invented return decision for orders in transit.** For a shipped order, `get_order` returned no `return_status`, so the model invented "you won't be able to return it". Fixed by computing a status for every order (issue #2).
 - **A prompt fix that caused a regression.** A rule telling the model to call both tools for order + policy questions did not fix the warranty question and broke a return question that had passed. Reverted after the full evaluation showed it.
 - **Memory is stored, but not always used.** In "What is the status of order 1043?" → "And when was it ordered?", the agent resolves "it" to order 1043 but searches the policy instead of reading `order_date` from the earlier tool result. Not fixed yet.
+- **Cancelled orders got the wrong return status.** `return_status` only checked the delivery date, so a cancelled order (no delivery date) got "Not delivered yet: return possible within 30 days after delivery", and the agent could promise a return. The keyword grader marked these answers as correct; the bug was found by reading the answers. Fixed with a check for cancelled orders before the date logic, plus a regression test.
 
 ## Security and limitations
 
