@@ -23,6 +23,7 @@
 - LangGraph agent sometimes answers order + policy questions from one tool (warranty for order 1042 without "24 months")
 - Hallucination from related context: "Do you ship to Japan?" gets the Delivery section and a made-up "yes"
 - Memory is stored but not always used ("And when was it ordered?" searches the policy instead of the earlier `get_order` result)
+- LangGraph answers "I don't have this information" for order 1041 (M02) even though `get_order` returns a clear verdict; appeared after a local Ollama update
 
 ## Later: AWS
 - [ ] Amazon Bedrock as the LLM, Titan embeddings, pgvector on RDS, deployment on ECS Fargate or App Runner

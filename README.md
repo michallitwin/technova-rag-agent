@@ -19,14 +19,15 @@ Golden set of 31 questions, `llama3.2` running locally, frozen date for reproduc
 
 | | One-step baseline | ReAct loop | LangGraph |
 |---|---|---|---|
-| **Correct answers** | 28/31 (90%) | **29/31 (94%)** | **29/31 (94%)** |
+| **Correct answers** | 28/31 (90%) | **29/31 (94%)** | 28/31 (90%) |
 | Tool calls per question | 1.0 | 1.13 | **1.0** |
-| Forced answers (repeated tool or step limit) | – | 23% | **0%** |
+| Forced answers (repeated tool or step limit) | – | 26% | **0%** |
 | Retrieval hit@2 | 100% | 100% | 100% |
 
-Both agents answer the same share of questions. LangGraph never hit the step limit and made fewer tool calls; one likely reason is native tool calling, which replaces the JSON the loop has to parse. Details are in [Evaluation](#evaluation).
+In the latest run ReAct answered one more question (29 vs 28). The difference is a single question that changed between runs (see v6), so both agents are at the same level within ±1 question.
+LangGraph never hit the step limit and made fewer tool calls; one likely reason is native tool calling, which replaces the JSON the loop has to parse. Details are in [Evaluation](#evaluation).
 
-The 23% forced answers in the ReAct loop come from the one-call-per-tool rule: the model asks for the same tool again, the code blocks it and forces an answer from the context it already has. All 7 forced answers in the latest run were still correct. LangGraph has no such rule (only a recursion limit), so part of the 23% vs 0% gap comes from this difference.
+The 26% forced answers in the ReAct loop come from the one-call-per-tool rule: the model asks for the same tool again, the code blocks it and forces an answer from the context it already has. All 8 forced answers in the latest run were still correct. LangGraph has no such rule (only a recursion limit), so part of the 23% vs 0% gap comes from this difference.
 
 ## Example
 
@@ -141,16 +142,16 @@ uv run pytest -v           # tests (no LLM needed)
 
 | Metric | Baseline | ReAct loop | LangGraph |
 |---|---|---|---|
-| Correct, overall | 90% | **94%** | **94%** |
+| Correct, overall | 90% | **94%** | 90% |
 | Policy | 100% | 90% | **100%** |
 | Order | 100% | 100% | 100% |
-| Mixed | 88% | **100%** | 88% |
+| Mixed | 88% | **100%** | 75% |
 | Not in data | 100% | 75% | 75% |
 | Missing info | 33% | **100%** | **100%** |
 | Tool calls per question | 1.0 | 1.13 | **1.0** |
-| Forced answers | – | 23% | **0%** |
+| Forced answers | – | 26% | **0%** |
 
-ReAct and LangGraph were run on the same machine (both ~1.5 s per answer); the baseline comes from an earlier run on a slower machine.
+Latency is not compared: between runs a local Ollama update changed it from ~1.5 s to ~0.4 s per answer for LangGraph, so the numbers are not comparable. The baseline comes from an earlier run.
 
 ### Error analysis
 
@@ -158,6 +159,7 @@ ReAct and LangGraph were run on the same machine (both ~1.5 s per answer); the b
 |---|---|---|---|
 | LangGraph | "Is the smartwatch from order 1042 still under warranty?" | skipped second tool | answered from one tool, so "24 months" is missing |
 | LangGraph | "Do you ship to Japan?" | hallucination from related context | the Delivery section passes the threshold and the model adds "Japan" |
+| LangGraph | Return question for order 1041 (M02) | "I don't know" despite the data | the tool returned a clear verdict, but the model answered "I don't have this information"; appeared after the Ollama update |
 | ReAct | "Do you have a store in Krakow?" | wrong "no" instead of "I don't know" | the policy says nothing about stores |
 | ReAct | "Who pays for return shipping?" | incomplete answer | "unless the product is damaged" left out |
 
@@ -171,16 +173,19 @@ ReAct and LangGraph were run on the same machine (both ~1.5 s per answer); the b
 | v3 | **delivery decision in code**, **one call per tool**, edge case at exactly $70.00 | 22/31 | 24/31 | – |
 | v4 | verdict-first `delivery_status`; grade the return verdict, accept more wordings | 28/31 | 29/31 | – |
 | v5 | **LangGraph agent**; `return_status` for orders not delivered yet; short policy queries; one grading fix ("November 19th") | – | 29/31 | **29/31** |
+| v6 | **cancelled orders**: `return_status` / `delivery_status` fixed, regression test | – | 29/31 | 28/31 |
 
 - **v1 → v1b:** the first grader was too lenient. Fixing it lowered the scores but made them honest.
 - **v2:** the threshold was chosen from measured scores (answerable questions ≥ 0.40, unanswerable ≤ 0.30) and cut invented answers.
 - **v3:** one call per tool cut tool calls from 2.2 to 1.06 per question and latency from 8.1 s to 5.0 s. Added a 31st question to test the edge case of an order of exactly $70.00 (the free-delivery threshold).
 - **v5:** the first LangGraph run scored 28/31, but one failure was a grading error ("November 19th" did not match "November 19"). A prompt rule meant to fix the warranty question broke a return question that had passed, so it was reverted.
+- **v6:** cancelled orders now get correct statuses (O03, O06 answered correctly in both agents). LangGraph dropped from 29/31 to 28/31 on M02. `git diff` shows the code path for this order did not change, and the model and temperature (0) are the same, so the change most likely comes from the runtime (Ollama updated itself between runs).
 
 ### Limitations of the evaluation
 
-- **The agents were tuned on the same 31 questions they are evaluated on**, so 94% is optimistic. A held-out set is on the roadmap.
+- **The agents were tuned on the same 31 questions they are evaluated on**, so these scores are optimistic. A held-out set is on the roadmap.
 - One question is ~3 percentage points; keyword grading checks facts, not tone or completeness.
+- Results depend on the runtime: with the same model, code and temperature 0, one question changed after the local Ollama was updated. Scores should be read as ±1 question.
 - The golden set has single questions only; memory is tested by hand.
 
 ## Design decisions
