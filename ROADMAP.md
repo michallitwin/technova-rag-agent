@@ -10,7 +10,10 @@
 - [ ] Held-out set of 10–15 new questions the agents were not tuned on
 - [ ] LLM-as-a-judge (pass/fail), validated against hand-labelled answers
 - [ ] Multi-turn test cases for conversation memory (e.g. "And when was it ordered?")
-- [ ] Prompt-injection test case (a policy chunk with a malicious instruction)
+- [x] Adversarial test set: 13 attack prompts (injection, prompt leak, other customers' data, business abuse, off-topic) + output guard, 10/13 → 12/13
+- [ ] Indirect prompt-injection test case (a policy chunk with a malicious instruction)
+- [ ] Customer ownership check in `get_order` (customer ID from the session), fixes adversarial A07
+- [ ] Grade adversarial answers by tool calls + LLM judge instead of forbidden phrases
 - [ ] Evaluate tool choice and tool arguments separately from the final answer
 
 ## Answers and observability
