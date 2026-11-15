@@ -4,6 +4,7 @@ import logging
 from string import Template
 
 from src.agent.answer import answer_from_results
+from src.agent.guard import guard_answer
 from src.agent.tools import run_tool
 from src.config import current_date, load_prompt, settings
 from src.llm.client import ask_ollama_json
@@ -61,7 +62,7 @@ def run_agent(question: str, max_steps: int = settings.agent_max_steps) -> dict:
 
         if "final_answer" in decision:
             logger.info("Step %d: final answer", step_no)
-            return {"answer": decision["final_answer"], "steps": steps, "forced": False}
+            return {"answer": guard_answer(decision["final_answer"]), "steps": steps, "forced": False}
 
         used_tools = [step["call"]["tool"] for step in steps if step["call"]]
         if decision.get("tool") in used_tools:
@@ -75,7 +76,7 @@ def run_agent(question: str, max_steps: int = settings.agent_max_steps) -> dict:
     else:
         logger.warning("Step limit (%d) reached -> forcing final answer", max_steps)
 
-    return {"answer": answer_from_results(question, steps), "steps": steps, "forced": True}
+    return {"answer": guard_answer(answer_from_results(question, steps)), "steps": steps, "forced": True}
 
 
 def main() -> None:

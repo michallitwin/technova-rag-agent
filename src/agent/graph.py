@@ -14,6 +14,7 @@ from langgraph.graph import START, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
 from src.agent import tools as store_tools
+from src.agent.guard import guard_answer
 from src.config import settings
 
 PROMPT_PATH = Path(__file__).resolve().parents[2] / "config" / "prompts" / "graph_system.txt"
@@ -104,7 +105,7 @@ def run_agent(graph, question: str, thread_id: str) -> str:
                 "configurable": {"thread_id": thread_id},
             },
         )
-        return result["messages"][-1].content
+        return guard_answer(result["messages"][-1].content)
     except GraphRecursionError:
         return "Sorry, I can't answer this. Please contact our support team."
 
@@ -128,7 +129,7 @@ def run_graph_agent(question: str) -> dict:
     for message in result["messages"]:
         for call in getattr(message, "tool_calls", []):
             steps.append({"call": {"tool": call["name"], "args": call["args"]}})
-    return {"answer": result["messages"][-1].content, "steps": steps, "forced": False}
+    return {"answer": guard_answer(result["messages"][-1].content), "steps": steps, "forced": False}
 
 
 if __name__ == "__main__":
