@@ -14,11 +14,26 @@ EXAMPLE_QUESTIONS = [
     "Do you ship to Japan?",
     "What did Emma Brown order?",
 ]
+# Simulated login: in production the customer would come from an auth token
+CUSTOMERS = [
+    "John Smith",
+    "Maria Garcia",
+    "Anna Kowalski",
+    "Piotr Nowak",
+    "Emma Brown",
+    "Lukas Meyer",
+    "Sophie Martin",
+]
 
 
-def ask_agent(question: str) -> dict:
-    """Send the question to POST /api/ask and return the JSON response."""
-    response = requests.post(f"{API_URL}/api/ask", json={"question": question}, timeout=REQUEST_TIMEOUT_S)
+def ask_agent(question: str, customer: str) -> dict:
+    """Send the question to POST /api/ask as the logged-in customer and return the JSON response."""
+    response = requests.post(
+        f"{API_URL}/api/ask",
+        json={"question": question},
+        headers={"X-Customer": customer},
+        timeout=REQUEST_TIMEOUT_S,
+    )
     response.raise_for_status()
     return response.json()
 
@@ -62,6 +77,8 @@ def main() -> None:
     st.set_page_config(page_title="TechNova Support Agent", page_icon="🛒")
     st.title("🛒 TechNova Support Agent")
     st.caption("RAG over store policy + SQL orders, ReAct loop. Demo client of the FastAPI service.")
+    customer = st.sidebar.selectbox("Logged in as", CUSTOMERS)
+    st.sidebar.caption("Simulated login: the agent only shows this customer's orders.")
     render_sidebar()
 
     example = st.selectbox("Try an example", [""] + EXAMPLE_QUESTIONS)
@@ -71,7 +88,7 @@ def main() -> None:
 
     with st.spinner("The agent is thinking..."):
         try:
-            result = ask_agent(question)
+            result = ask_agent(question, customer)
         except requests.HTTPError as err:
             st.error(f"API error {err.response.status_code}: {err.response.json().get('detail')}")
             return
