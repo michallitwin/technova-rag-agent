@@ -12,14 +12,15 @@ NO_POLICY_INFO = {
 }
 
 
-def get_order(order_id: int) -> dict:
-    """Return one order as a dict, or an error dict if it does not exist. Read-only."""
+def get_order(order_id: int, customer: str) -> dict:
+    """Return one order as a dict, or an error dict if it does not exist. Read-only.
+    Only returns orders that belong to customer; someones else's order looks like a missing one"""
     with sqlite3.connect(f"file:{settings.db_path}?mode=ro", uri=True) as conn:   # read-only
         conn.row_factory = sqlite3.Row                                            # rows like dicts
         row = conn.execute(
             "SELECT * FROM orders WHERE order_id = ?", (order_id,)               # parameter, no f-string
         ).fetchone()
-    if row is None:
+    if row is None or row["customer"] != customer:
         return {"error": f"Order {order_id} not found. Ask the customer to check the order number."}
 
     order = dict(row)

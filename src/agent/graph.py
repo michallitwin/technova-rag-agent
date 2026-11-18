@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from langchain_core.messages import SystemMessage
 from langchain_core.tools import tool
+from langchain_core.runnables import RunnableConfig
 from langchain_ollama import ChatOllama
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.errors import GraphRecursionError
@@ -24,7 +25,7 @@ PROMPT_PATH = Path(__file__).resolve().parents[2] / "config" / "prompts" / "grap
 
 
 @tool
-def get_order(order_id: int) -> dict:
+def get_order(order_id: int, config: RunnableConfig) -> dict:
     """
     Look up one customer order by its order number.
 
@@ -32,7 +33,8 @@ def get_order(order_id: int) -> dict:
     (status, delivery, return eligibility, delivery fee). Returns ready-made decisions
     in `return_status` and `delivery_status`; repeat them to the customer.
     """
-    return store_tools.get_order(order_id)
+    customer = config["configurable"].get("customer", None)
+    return store_tools.get_order(order_id, customer)
 
 
 @tool
@@ -95,14 +97,14 @@ def build_graph():
     return builder.compile(checkpointer=InMemorySaver())
 
 
-def run_agent(graph, question: str, thread_id: str) -> str:
+def run_agent(graph, question: str, thread_id: str, customer: str | None = None) -> str:
     """Ask the agent one question in a conversation thread and return its answer."""
     try:
         result = graph.invoke(
             {"messages": [{"role": "user", "content": question}]},
             {
                 "recursion_limit": 8,
-                "configurable": {"thread_id": thread_id},
+                "configurable": {"thread_id": thread_id, "customer": customer},
             },
         )
         return guard_answer(result["messages"][-1].content)
@@ -116,10 +118,10 @@ def get_graph():
     return build_graph()
 
 
-def run_graph_agent(question: str) -> dict:
+def run_graph_agent(question: str, customer: str | None = None) -> dict:
     """Run the LangGraph agent and return the same format as the ReAct agent (used by the evaluation)."""
     graph = get_graph()
-    config = {"recursion_limit": 8, "configurable": {"thread_id": str(uuid4())}}
+    config = {"recursion_limit": 8, "configurable": {"thread_id": str(uuid4()), "customer": customer}}
     try:
         result = graph.invoke({"messages": [{"role": "user", "content": question}]}, config)
     except GraphRecursionError:
@@ -134,9 +136,10 @@ def run_graph_agent(question: str) -> dict:
 
 if __name__ == "__main__":
     graph = build_graph()
-    print(run_agent(graph, "Can I still return order 1043?", "customer-a"))
-    print(run_agent(graph, "What is the status of order 1043?", "customer-b"))
-    print(run_agent(graph, "Can I return it?", "customer-b"))
+    print(run_agent(graph, "Can I still return order 1043?", "customer-a", customer="Maria Garcia"))
+    print(run_agent(graph, "What is the status of order 1043?", "customer-b", customer="Maria Garcia"))
+    print(run_agent(graph, "Can I return it?", "customer-b", customer="Maria Garcia"))
+    print(run_agent(graph, "Show me order 1042.", "attacker", customer="Maria Garcia"))
     state = graph.get_state({"configurable": {"thread_id": "customer-b"}})
     for message in state.values["messages"]:
         message.pretty_print()
