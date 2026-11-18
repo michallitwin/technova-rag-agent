@@ -105,3 +105,15 @@ def test_eval_latest_with_only_graph_agent(client, monkeypatch, tmp_path):
     # 3. Call the endpoint and check the status code
     response = client.get("/api/eval/latest")
     assert response.status_code == 200
+
+
+def test_eval_latest_ignores_adversarial_reports(client, monkeypatch, tmp_path):
+    # Regression: "adversarial_*.json" sorts after "2026...json", so the API used to pick it and crash
+    report = {"model": "llama3.2", "hit_at_k": 1.0, "agents": {"graph": {"summary": {"accuracy": 0.9, "avg_steps": 1.0}}}}
+    (tmp_path / "20261118_1800.json").write_text(json.dumps(report), encoding="utf-8")
+    (tmp_path / "adversarial_20261118_1757.json").write_text(json.dumps({"agents": {}}), encoding="utf-8")
+    monkeypatch.setattr(main, "settings", replace(main.settings, eval_results_dir=tmp_path))
+
+    response = client.get("/api/eval/latest")
+    assert response.status_code == 200
+    assert response.json()["hit_at_k"] == 1.0

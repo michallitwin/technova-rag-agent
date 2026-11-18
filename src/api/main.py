@@ -31,7 +31,8 @@ def ask(request: AskRequest, x_customer: str | None = Header(default=None)) -> A
 @app.get("/api/eval/latest", response_model=EvalSummaryResponse)
 def latest_eval() -> EvalSummaryResponse:
     """Summary of the most recent evaluation report."""
-    reports = sorted(settings.eval_results_dir.glob("*.json"))
+    # Golden-set reports only: adversarial_*.json has a different format and sorts after digits
+    reports = sorted(settings.eval_results_dir.glob("[0-9]*.json"))
     if not reports:
         raise HTTPException(status_code=404, detail="No evaluation report found.")
     report = json.loads(reports[-1].read_text(encoding="utf-8"))
