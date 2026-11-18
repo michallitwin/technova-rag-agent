@@ -181,6 +181,7 @@
     "id": "O01",
     "category": "order",
     "question": "What is the status of order 1043?",
+    "customer": "Maria Garcia",
     "expected_tools": [
       "get_order"
     ],
@@ -195,6 +196,7 @@
     "id": "O02",
     "category": "order",
     "question": "What is the status of order 1046?",
+    "customer": "Lukas Meyer",
     "expected_tools": [
       "get_order"
     ],
@@ -211,6 +213,7 @@
     "id": "O03",
     "category": "order",
     "question": "What was ordered in order 1045?",
+    "customer": "Emma Brown",
     "expected_tools": [
       "get_order"
     ],
@@ -225,6 +228,7 @@
     "id": "O04",
     "category": "order",
     "question": "How much did order 1042 cost?",
+    "customer": "John Smith",
     "expected_tools": [
       "get_order"
     ],
@@ -239,6 +243,7 @@
     "id": "O05",
     "category": "order",
     "question": "When was order 1044 delivered?",
+    "customer": "Piotr Nowak",
     "expected_tools": [
       "get_order"
     ],
@@ -256,6 +261,7 @@
     "id": "O06",
     "category": "order",
     "question": "Was order 1045 cancelled?",
+    "customer": "Emma Brown",
     "expected_tools": [
       "get_order"
     ],
@@ -271,6 +277,7 @@
     "id": "M01",
     "category": "mixed",
     "question": "Can I still return order 1042?",
+    "customer": "John Smith",
     "expected_tools": [
       "get_order"
     ],
@@ -289,6 +296,7 @@
     "id": "M02",
     "category": "mixed",
     "question": "Can I still return order 1041?",
+    "customer": "Anna Kowalski",
     "expected_tools": [
       "get_order"
     ],
@@ -310,6 +318,7 @@
     "id": "M03",
     "category": "mixed",
     "question": "Until when can I return order 1044?",
+    "customer": "Piotr Nowak",
     "expected_tools": [
       "get_order"
     ],
@@ -328,6 +337,7 @@
     "id": "M04",
     "category": "mixed",
     "question": "Did order 1044 get free delivery?",
+    "customer": "Piotr Nowak",
     "expected_tools": [
       "get_order"
     ],
@@ -343,6 +353,7 @@
     "id": "M05",
     "category": "mixed",
     "question": "How much was delivery for order 1043?",
+    "customer": "Maria Garcia",
     "expected_tools": [
       "get_order"
     ],
@@ -359,6 +370,7 @@
     "id": "M06",
     "category": "mixed",
     "question": "Did order 1041 qualify for free delivery?",
+    "customer": "Anna Kowalski",
     "expected_tools": [
       "get_order"
     ],
@@ -377,6 +389,7 @@
     "id": "M07",
     "category": "mixed",
     "question": "The smartwatch from order 1042 stopped working. Is it still under warranty?",
+    "customer": "John Smith",
     "expected_tools": [
       "get_order",
       "search_policy"
@@ -515,6 +528,7 @@
     "id": "E03",
     "category": "missing_info",
     "question": "When will order 9999 arrive?",
+    "customer": "John Smith",
     "expected_tools": [
       "get_order"
     ],
@@ -536,6 +550,7 @@
     "id": "M08",
     "category": "mixed",
     "question": "Did order 1047 get free delivery?",
+    "customer": "Sophie Martin",
     "expected_tools": [
       "get_order"
     ],
