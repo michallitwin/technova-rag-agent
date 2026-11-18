@@ -12,9 +12,9 @@ NO_POLICY_INFO = {
 }
 
 
-def get_order(order_id: int, customer: str) -> dict:
+def get_order(order_id: int, customer: str | None) -> dict:
     """Return one order as a dict, or an error dict if it does not exist. Read-only.
-    Only returns orders that belong to customer; someones else's order looks like a missing one"""
+    Only returns orders that belong to customer; someone else's order looks like a missing one"""
     with sqlite3.connect(f"file:{settings.db_path}?mode=ro", uri=True) as conn:   # read-only
         conn.row_factory = sqlite3.Row                                            # rows like dicts
         row = conn.execute(
@@ -76,7 +76,7 @@ def search_policy(query: str) -> dict:
 TOOLS = {"search_policy": search_policy, "get_order": get_order}
 
 
-def run_tool(choice: dict) -> dict:
+def run_tool(choice: dict, customer: str | None = None) -> dict:
     """Validate the router's choice, then run the tool. Errors are returned as data, not raised."""
     name = choice.get("tool")
     args = choice.get("args", {})
@@ -84,7 +84,7 @@ def run_tool(choice: dict) -> dict:
         return {"error": f"Unknown tool: {name}"}
     try:
         if name == "get_order":
-            return get_order(int(args["order_id"]))        # must be an integer
+            return get_order(int(args["order_id"]), customer)        # must be an integer
         return search_policy(str(args["query"]))          # must be text
     except (KeyError, ValueError, TypeError):
         if name == "get_order":

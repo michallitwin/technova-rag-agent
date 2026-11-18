@@ -47,7 +47,7 @@ def describe_result(result: dict) -> str:
     return result.get("status", "ok")
 
 
-def run_agent(question: str, max_steps: int = settings.agent_max_steps) -> dict:
+def run_agent(question: str, customer: str | None = None, max_steps: int = settings.agent_max_steps) -> dict:
     """Run the ReAct loop; if the model stalls, force a final answer from the results."""
     system = build_system_prompt()
     steps: list[dict] = []
@@ -69,7 +69,7 @@ def run_agent(question: str, max_steps: int = settings.agent_max_steps) -> dict:
             logger.info("Step %d: tool already used -> forcing final answer", step_no)
             break
 
-        result = run_tool(decision)
+        result = run_tool(decision, customer)
         logger.info("Step %d: %s -> %s", step_no, describe_call(decision), describe_result(result))
         logger.debug("Step %d full result: %s", step_no, result)
         steps.append({"call": decision, "result": result})
@@ -84,13 +84,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Ask the TechNova support agent a question.")
     parser.add_argument("question", help="e.g. 'Can I still return order 1042?'")
     parser.add_argument("-v", "--verbose", action="store_true", help="show full tool results")
+    parser.add_argument("--customer", help="logged-in customer, e.g. 'John Smith'")
     args = parser.parse_args()
 
     # Libraries log only warnings; our logger shows the steps (or everything with -v)
     logging.basicConfig(level=logging.WARNING, format="%(message)s")
     logger.setLevel(logging.DEBUG if args.verbose else logging.INFO)
 
-    print(f"\nAnswer: {run_agent(args.question)['answer']}")
+    print(f"\nAnswer: {run_agent(args.question, customer=args.customer)['answer']}")
 
 
 if __name__ == "__main__":

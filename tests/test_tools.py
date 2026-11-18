@@ -33,34 +33,34 @@ def test_db(tmp_path, monkeypatch):
 
 
 def test_order_of_exactly_70_has_paid_delivery():
-    order = tools.get_order(1047)
+    order = tools.get_order(1047, "Sophie Martin")
     assert order["delivery_status"].startswith("NOT free delivery")
 
 
 def test_order_over_70_has_free_delivery():
-    order = tools.get_order(1044)
+    order = tools.get_order(1044, "Piotr Nowak")
     assert order["delivery_status"].startswith("Free delivery")
 
 
 def test_return_not_possible_after_30_days():
-    order = tools.get_order(1041)
+    order = tools.get_order(1041, "Anna Kowalski")
     assert order["return_window_open"] is False
     assert "2026-10-18" in order["return_status"]
 
 
 def test_return_possible_within_30_days():
-    order = tools.get_order(1042)
+    order = tools.get_order(1042, "John Smith")
     assert order["return_window_open"] is True
     assert "2026-11-09" in order["return_status"]
 
 
 def test_unknown_order_returns_error():
-    order = tools.get_order(9999)
+    order = tools.get_order(9999, "John Smith")
     assert "error" in order
 
 
 def test_return_status_for_order_not_delivered_yet():
-    order = tools.get_order(1043)
+    order = tools.get_order(1043, "Maria Garcia")
     assert order["return_status"].startswith("Not delivered yet")
 
 
@@ -74,7 +74,27 @@ def test_run_tool_without_order_number_asks_for_it():
     result = tools.run_tool({"tool": "get_order", "args": {}})
     assert "order number" in result["error"]
 
+
 def test_cancelled_order_cannot_be_returned():
-    order = tools.get_order(1045)
+    order = tools.get_order(1045, "Emma Brown")
     assert order["return_status"].startswith("Return NOT possible")
     assert order["delivery_status"].startswith("No delivery")
+
+
+def test_other_customers_order_looks_missing():
+    # A07: Maria asks for John Smith's order -> same error as a missing order (no enumeration)
+    order = tools.get_order(1042, "Maria Garcia")
+    assert order["error"].startswith("Order 1042 not found")
+    assert "John Smith" not in str(order)
+
+
+def test_order_without_logged_in_customer_is_hidden():
+    # Fail-safe: nobody logged in -> no order is shown
+    assert "error" in tools.get_order(1042, None)
+
+
+def test_run_tool_uses_customer_from_code_not_from_model():
+    # The model cannot choose the customer: extra "customer" in args is ignored
+    choice = {"tool": "get_order", "args": {"order_id": 1042, "customer": "John Smith"}}
+    assert "error" in tools.run_tool(choice, customer="Maria Garcia")
+    assert tools.run_tool(choice, customer="John Smith")["product"] == "Smartwatch"
