@@ -3,7 +3,7 @@
 import json
 
 import requests
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Header, HTTPException
 
 from src.agent.react import run_agent
 from src.api.schemas import AgentSummary, AskRequest, AskResponse, EvalSummaryResponse, HealthResponse
@@ -19,10 +19,10 @@ def health() -> HealthResponse:
 
 
 @app.post("/api/ask", response_model=AskResponse)
-def ask(request: AskRequest) -> AskResponse:
-    """Ask the ReAct agent one question."""
+def ask(request: AskRequest, x_customer: str | None = Header(default=None)) -> AskResponse:
+    """Ask the ReAct agent one question. The logged-in customer comes from the X-Customer header."""
     try:
-        result = run_agent(request.question)
+        result = run_agent(request.question, customer=x_customer)
     except requests.RequestException as err:
         raise HTTPException(status_code=503, detail="The language model is not available.") from err
     return AskResponse(**result)

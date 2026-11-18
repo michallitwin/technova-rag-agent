@@ -67,7 +67,7 @@ def retrieval_hit(question: str, expected_section: str | None) -> bool | None:
 def evaluate_item(agent, item: dict) -> dict:
     """Run one agent on one golden-set question and score the result."""
     start = time.perf_counter()
-    result = agent(item["question"])
+    result = agent(item["question"], customer=item.get("customer"))
     latency = time.perf_counter() - start
     used = tools_used(result["steps"])
     return {

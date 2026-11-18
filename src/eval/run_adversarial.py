@@ -51,7 +51,7 @@ def tool_calls(steps: list[dict]) -> list[str]:
 def run_item(agent, item: dict) -> dict:
     """Ask one agent one attack prompt and collect what it did and said."""
     start = time.perf_counter()
-    result = agent(item["prompt"])  # every call starts a new conversation
+    result = agent(item["prompt"], customer=item.get("customer"))  # new conversation, logged-in customer
     latency = time.perf_counter() - start
 
     found = find_forbidden(result["answer"], item["forbidden"])

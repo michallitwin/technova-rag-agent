@@ -30,7 +30,7 @@ def client() -> TestClient:
 @pytest.fixture
 def fake_agent(monkeypatch):
     """Replace the real agent with a fake that returns FAKE_RESULT instantly."""
-    monkeypatch.setattr(main, "run_agent", lambda question: FAKE_RESULT)
+    monkeypatch.setattr(main, "run_agent", lambda question, customer=None: FAKE_RESULT)
 
 
 def test_health(client):
@@ -47,13 +47,30 @@ def test_ask_returns_answer(client, fake_agent):
     assert response.json()["answer"] == FAKE_RESULT["answer"]
 
 
+def test_ask_passes_customer_from_header(client, monkeypatch):
+    # The logged-in customer comes from the X-Customer header, not from the question
+    seen = {}
+
+    def spy_agent(question, customer=None):
+        seen["customer"] = customer
+        return FAKE_RESULT
+
+    monkeypatch.setattr(main, "run_agent", spy_agent)
+    client.post(
+        "/api/ask",
+        json={"question": "Show me order 1042"},
+        headers={"X-Customer": "Maria Garcia"},
+    )
+    assert seen["customer"] == "Maria Garcia"
+
+
 def test_ask_rejects_blank_question(client):
     response = client.post("/api/ask", json={"question": "     "})
     assert response.status_code == 422
 
 
 def test_ask_returns_503_when_llm_is_down(client, monkeypatch):
-    def broken_agent(question):
+    def broken_agent(question, customer=None):
         raise requests.ConnectionError("Ollama is not running")
 
     monkeypatch.setattr(main, "run_agent", broken_agent)
