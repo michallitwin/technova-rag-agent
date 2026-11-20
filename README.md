@@ -23,6 +23,9 @@ Golden set of 31 questions, `llama3.2` running locally, frozen date for reproduc
 | Tool calls per question | 1.0 | 1.13 | **1.0** |
 | Forced answers (repeated tool or step limit) | – | 26% | **0%** |
 | Retrieval hit@2 | 100% | 100% | 100% |
+| **Held-out set (12 new questions)** | – | 8/12 (67%) | **10/12 (83%)** |
+
+On the golden set the agents were tuned on, ReAct looks best. On 12 new questions it drops to 67% (75% after reading the answers, one was a grading error), while LangGraph holds at 83%: the ReAct loop was more overfitted to the tuning set. See [Held-out set](#held-out-set).
 
 In the latest run ReAct answered one more question (29 vs 28). The difference is a single question that changed between runs (see v6), so both agents are at the same level within ±1 question.
 LangGraph never hit the step limit and made fewer tool calls; one likely reason is native tool calling, which replaces the JSON the loop has to parse. Details are in [Evaluation](#evaluation).
@@ -105,6 +108,8 @@ uv run --env-file .env streamlit run src/ui/streamlit_app.py   # Streamlit demo
 
 # evaluation with a frozen date (reports are saved to data/eval/results/)
 TODAY=2026-10-26 uv run --env-file .env python -m src.eval.run_eval --agents react graph
+# held-out set (questions never used for tuning), results in a separate folder
+TODAY=2026-10-26 EVAL_SET_PATH=data/eval/heldout_set.json EVAL_RESULTS_DIR=data/eval/results/heldout uv run --env-file .env python -m src.eval.run_eval --agents react graph
 
 uv run ruff check .        # lint
 uv run pytest -v           # tests (no LLM needed)
@@ -165,6 +170,34 @@ Latency is not compared: between runs a local Ollama update changed it from ~1.5
 | ReAct | "Do you have a store in Krakow?" | wrong "no" instead of "I don't know" | the policy says nothing about stores |
 | ReAct | "Who pays for return shipping?" | incomplete answer | "unless the product is damaged" left out |
 
+### Held-out set
+
+The golden set was used to tune prompts and code for six versions, so its scores are optimistic. To measure that, I wrote 12 new questions in the same five categories **after** tuning (`data/eval/heldout_set.json`) and ran them once. Rule: the agents are **not** changed to fit these questions; if they were, the set would stop being held out.
+
+| | ReAct loop | LangGraph |
+|---|---|---|
+| Golden set (tuned) | 94% (29/31) | 90% (28/31) |
+| **Held-out, grader** | 67% (8/12) | **83% (10/12)** |
+| Held-out, after reading the answers | 75% (9/12) | 83% (10/12) |
+| Retrieval hit@2 | 100% | 100% |
+
+Every failed answer was read by hand:
+
+| Agent | Question | What it said | Error type |
+|---|---|---|---|
+| ReAct | H02 damaged headphones, who pays to send them back? | "Yes, you will have to pay" | skipped "unless the product is damaged" (same as P05 on the golden set) |
+| ReAct | H03 what to attach to a complaint? | "the TechNova Online Store Policy" | misread the chunk; should be "proof of purchase" |
+| ReAct | H09 is the speaker from 1044 still under warranty? | "24 months… would still be valid" | **correct answer, grading error** ("still be valid" does not match "still valid") |
+| ReAct | H10 can I pay in installments? | "No, TechNova does not offer installment payment options" | invented "no" instead of "I don't know" |
+| LangGraph | H09 warranty for 1044 | "still valid", no order lookup, no "24 months" | used one tool instead of two (same as M07 on the golden set) |
+| LangGraph | H10 installments | listed the payment methods | answered next to the question instead of "I don't have this information" |
+
+What it shows:
+- **ReAct was more overfitted** to the golden set (94% → 75%) than LangGraph (90% → 83%). Part of the loop's lead came from prompt fixes for specific questions.
+- **Retrieval is not the problem** (hit@2 = 100%); every error comes from the model.
+- **Two weaknesses repeat on both sets:** questions with no answer in the data (both agents invent or deflect instead of saying "I don't know") and order + policy questions (LangGraph calls one tool).
+- With 12 questions, one answer is ~8 percentage points, so these numbers are a direction, not a precise score. The grading error in H09 was not "fixed" after seeing the answer; an LLM judge is the next step.
+
 ### History of changes
 
 | Version | Change | Baseline | ReAct | LangGraph |
@@ -185,7 +218,7 @@ Latency is not compared: between runs a local Ollama update changed it from ~1.5
 
 ### Limitations of the evaluation
 
-- **The agents were tuned on the same 31 questions they are evaluated on**, so these scores are optimistic. A held-out set is on the roadmap.
+- **The agents were tuned on the same 31 questions they are evaluated on**, so these scores are optimistic. The [held-out set](#held-out-set) measures the gap (ReAct 94% → 75%, LangGraph 90% → 83%), but it has only 12 questions.
 - One question is ~3 percentage points; keyword grading checks facts, not tone or completeness.
 - Results depend on the runtime: with the same model, code and temperature 0, one question changed after the local Ollama was updated. Scores should be read as ±1 question.
 - The golden set has single questions only; memory is tested by hand.
@@ -218,6 +251,8 @@ Smaller choices: prompts live in `config/prompts/`, settings come from environme
 - **A prompt fix that caused a regression.** A rule telling the model to call both tools for order + policy questions did not fix the warranty question and broke a return question that had passed. Reverted after the full evaluation showed it.
 - **Memory is stored, but not always used.** In "What is the status of order 1043?" → "And when was it ordered?", the agent resolves "it" to order 1043 but searches the policy instead of reading `order_date` from the earlier tool result. Not fixed yet.
 - **Cancelled orders got the wrong return status.** `return_status` only checked the delivery date, so a cancelled order (no delivery date) got "Not delivered yet: return possible within 30 days after delivery", and the agent could promise a return. The keyword grader marked these answers as correct; the bug was found by reading the answers. Fixed with a check for cancelled orders before the date logic, plus a regression test.
+- **A too broad `except` hid a bug.** After the ownership fix, `run_tool` called `get_order` without the customer. The `TypeError` was caught by an `except (KeyError, ValueError, TypeError)` meant for bad order numbers, so the agent asked customers for an order number they had already given. Nothing crashed; a test on `run_tool` found it.
+- **The API read the wrong report.** `/api/eval/latest` took the last JSON file by name, and `adversarial_*.json` sorts after the date-named reports, so the endpoint crashed and the demo showed "API not reachable". It appeared only after a second report type was added. Fixed by reading date-named reports only, plus a regression test with both file types.
 
 ## Security and limitations
 

@@ -7,7 +7,7 @@
 - [ ] Chunk size comparison with recall@k (check whether the splitter counts characters or tokens)
 
 ## Evaluation
-- [ ] Held-out set of 10–15 new questions the agents were not tuned on
+- [x] Held-out set of 12 new questions the agents were not tuned on: ReAct 94% → 75%, LangGraph 90% → 83%
 - [ ] LLM-as-a-judge (pass/fail), validated against hand-labelled answers
 - [ ] Multi-turn test cases for conversation memory (e.g. "And when was it ordered?")
 - [x] Adversarial test set: 13 attack prompts (injection, prompt leak, other customers' data, business abuse, off-topic) + output guard, 10/13 → 12/13
