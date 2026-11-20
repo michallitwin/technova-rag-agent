@@ -10,5 +10,5 @@ chroma_db/
 .env
 # Virtual environments
 .venv
-experiments/
+/experiments
 .ruff_cache/
