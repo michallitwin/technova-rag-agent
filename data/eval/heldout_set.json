@@ -23,7 +23,6 @@
     "expected_section": "Returns",
     "expected_facts": [
       [
-        "no",
         "don't have to pay",
         "do not have to pay",
         "won't have to pay",
@@ -133,7 +132,6 @@
     "expected_facts": [
       [
         "free",
-        "no",
         "don't have to pay",
         "do not have to pay"
       ]
