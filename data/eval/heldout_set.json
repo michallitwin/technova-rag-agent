@@ -1,0 +1,225 @@
+[
+  {
+    "id": "H01",
+    "category": "policy",
+    "question": "Can I pay with PayPal?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Payments",
+    "expected_facts": [
+      [
+        "PayPal"
+      ]
+    ]
+  },
+  {
+    "id": "H02",
+    "category": "policy",
+    "question": "My headphones arrived damaged. Do I have to pay to send them back?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Returns",
+    "expected_facts": [
+      [
+        "no",
+        "don't have to pay",
+        "do not have to pay",
+        "won't have to pay",
+        "will not have to pay",
+        "free of charge",
+        "no cost",
+        "unless the product is damaged",
+        "not responsible"
+      ]
+    ]
+  },
+  {
+    "id": "H03",
+    "category": "policy",
+    "question": "What do I need to attach when I file a complaint?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Warranty",
+    "expected_facts": [
+      [
+        "proof of purchase"
+      ]
+    ]
+  },
+  {
+    "id": "H04",
+    "category": "policy",
+    "question": "If I place an order at 3 PM, will it ship the same day?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": "Delivery",
+    "expected_facts": [
+      [
+        "2:00 PM",
+        "2 PM",
+        "2pm",
+        "2:00pm",
+        "14:00"
+      ]
+    ]
+  },
+  {
+    "id": "H05",
+    "category": "order",
+    "question": "What did I buy in order 1046?",
+    "customer": "Lukas Meyer",
+    "expected_tools": [
+      "get_order"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "keyboard"
+      ]
+    ]
+  },
+  {
+    "id": "H06",
+    "category": "order",
+    "question": "On what date did I place order 1047?",
+    "customer": "Sophie Martin",
+    "expected_tools": [
+      "get_order"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "2026-10-21",
+        "October 21",
+        "21 October",
+        "Oct 21",
+        "October 21st"
+      ]
+    ]
+  },
+  {
+    "id": "H07",
+    "category": "mixed",
+    "question": "Is it too late to send back the webcam from order 1047?",
+    "customer": "Sophie Martin",
+    "expected_tools": [
+      "get_order"
+    ],
+    "expected_section": "Returns",
+    "expected_facts": [
+      [
+        "can return",
+        "can still",
+        "still within",
+        "not too late",
+        "possible",
+        "yes"
+      ]
+    ]
+  },
+  {
+    "id": "H08",
+    "category": "mixed",
+    "question": "Do I have to pay for shipping on order 1046?",
+    "customer": "Lukas Meyer",
+    "expected_tools": [
+      "get_order"
+    ],
+    "expected_section": "Delivery",
+    "expected_facts": [
+      [
+        "free",
+        "no",
+        "don't have to pay",
+        "do not have to pay"
+      ]
+    ]
+  },
+  {
+    "id": "H09",
+    "category": "mixed",
+    "question": "The Bluetooth speaker from order 1044 broke. Is the warranty still valid?",
+    "customer": "Piotr Nowak",
+    "expected_tools": [
+      "get_order",
+      "search_policy"
+    ],
+    "expected_section": "Warranty",
+    "expected_facts": [
+      [
+        "yes",
+        "still valid",
+        "still under warranty",
+        "covered"
+      ],
+      [
+        "24 months",
+        "24-month",
+        "two years",
+        "2 years"
+      ]
+    ]
+  },
+  {
+    "id": "H10",
+    "category": "no_answer",
+    "question": "Can I pay in installments?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "don't know",
+        "do not know",
+        "don't have information",
+        "don't have this information",
+        "don't have any information",
+        "do not have information",
+        "no information",
+        "not able to find",
+        "couldn't find",
+        "not sure"
+      ]
+    ]
+  },
+  {
+    "id": "H11",
+    "category": "no_answer",
+    "question": "Do you offer a student discount?",
+    "expected_tools": [
+      "search_policy"
+    ],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "don't know",
+        "do not know",
+        "don't have information",
+        "don't have this information",
+        "don't have any information",
+        "do not have information",
+        "no information",
+        "not able to find",
+        "couldn't find",
+        "not sure"
+      ]
+    ]
+  },
+  {
+    "id": "H12",
+    "category": "missing_info",
+    "question": "Has my package been shipped yet?",
+    "expected_tools": [],
+    "expected_section": null,
+    "expected_facts": [
+      [
+        "order number"
+      ]
+    ]
+  }
+]
