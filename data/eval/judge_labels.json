@@ -1,0 +1,1222 @@
+[
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "P01",
+    "category": "policy",
+    "question": "How long is the warranty?",
+    "expected": [
+      "24 months"
+    ],
+    "answer": "The warranty period at TechNova is 24 months.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "P02",
+    "category": "policy",
+    "question": "How much does delivery cost?",
+    "expected": [
+      "$5",
+      "$70"
+    ],
+    "answer": "The delivery cost is $5 for standard courier delivery, and it's free for orders over $70.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "P03",
+    "category": "policy",
+    "question": "How long does delivery take?",
+    "expected": [
+      "1-3"
+    ],
+    "answer": "Delivery typically takes 1 to 3 business days.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "P04",
+    "category": "policy",
+    "question": "If I order before 2 PM, when will my order ship?",
+    "expected": [
+      "same business day"
+    ],
+    "answer": "Your order will ship on the same business day if you place it before 2:00 PM.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "P05",
+    "category": "policy",
+    "question": "Who pays for return shipping?",
+    "expected": [
+      "customer",
+      "damaged"
+    ],
+    "answer": "The customer pays for return shipping.",
+    "grader": false,
+    "human": false,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "P06",
+    "category": "policy",
+    "question": "What payment methods do you accept?",
+    "expected": [
+      "card",
+      "PayPal",
+      "bank transfer"
+    ],
+    "answer": "We accept credit cards, PayPal and bank transfers.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "P07",
+    "category": "policy",
+    "question": "How long does it take to process a complaint?",
+    "expected": [
+      "14 days"
+    ],
+    "answer": "It takes 14 days to process a complaint.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "P08",
+    "category": "policy",
+    "question": "In what condition must a returned product be?",
+    "expected": [
+      "unused",
+      "original packaging"
+    ],
+    "answer": "The product must be unused and in its original packaging.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "P09",
+    "category": "policy",
+    "question": "How do I report a defect?",
+    "expected": [
+      "complaint form",
+      "proof of purchase"
+    ],
+    "answer": "To report a defect, you need to fill in the complaint form and attach the proof of purchase.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "P10",
+    "category": "policy",
+    "question": "When is an order paid by bank transfer processed?",
+    "expected": [
+      "payment is received"
+    ],
+    "answer": "An order paid by bank transfer is processed after the payment is received.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "O01",
+    "category": "order",
+    "question": "What is the status of order 1043?",
+    "expected": [
+      "shipped"
+    ],
+    "answer": "The status of order 1043 is shipped.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "O02",
+    "category": "order",
+    "question": "What is the status of order 1046?",
+    "expected": [
+      "processing"
+    ],
+    "answer": "The status of order 1046 is processing.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "O03",
+    "category": "order",
+    "question": "What was ordered in order 1045?",
+    "expected": [
+      "laptop stand"
+    ],
+    "answer": "The customer, Emma Brown, ordered a Laptop stand for $34.00 on October 12, 2026. The order was cancelled and therefore return and delivery are not possible.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "O04",
+    "category": "order",
+    "question": "How much did order 1042 cost?",
+    "expected": [
+      "129"
+    ],
+    "answer": "The order 1042 cost $129.00.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "O05",
+    "category": "order",
+    "question": "When was order 1044 delivered?",
+    "expected": [
+      "2026-10-20"
+    ],
+    "answer": "The order 1044 was delivered on 2026-10-20.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "O06",
+    "category": "order",
+    "question": "Was order 1045 cancelled?",
+    "expected": [
+      "cancelled"
+    ],
+    "answer": "Yes, order 1045 was cancelled.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "M01",
+    "category": "mixed",
+    "question": "Can I still return order 1042?",
+    "expected": [
+      "yes"
+    ],
+    "answer": "Yes, John Smith can still return the order 1042 as it is still within the return window.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "M02",
+    "category": "mixed",
+    "question": "Can I still return order 1041?",
+    "expected": [
+      "not possible"
+    ],
+    "answer": "No, the return window for order 1041 has closed.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "M03",
+    "category": "mixed",
+    "question": "Until when can I return order 1044?",
+    "expected": [
+      "2026-11-19"
+    ],
+    "answer": "You can return order 1044 until 2026-11-19.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "M04",
+    "category": "mixed",
+    "question": "Did order 1044 get free delivery?",
+    "expected": [
+      "yes"
+    ],
+    "answer": "Yes, order 1044 got free delivery.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "M05",
+    "category": "mixed",
+    "question": "How much was delivery for order 1043?",
+    "expected": [
+      "$5"
+    ],
+    "answer": "The delivery cost for order 1043 was $5.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "M06",
+    "category": "mixed",
+    "question": "Did order 1041 qualify for free delivery?",
+    "expected": [
+      "no"
+    ],
+    "answer": "No, order 1041 did not qualify for free delivery.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "M07",
+    "category": "mixed",
+    "question": "The smartwatch from order 1042 stopped working. Is it still under warranty?",
+    "expected": [
+      "yes",
+      "24 months"
+    ],
+    "answer": "Yes, the smartwatch from order 1042 is still under warranty, with a 24-month warranty period that has not yet expired.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "N01",
+    "category": "no_answer",
+    "question": "Do you have a store in Krakow?",
+    "expected": [
+      "don't know"
+    ],
+    "answer": "We do not have a store in Krakow. Our store policy does not mention any locations in Krakow.",
+    "grader": false,
+    "human": false,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "N02",
+    "category": "no_answer",
+    "question": "Do you ship to Japan?",
+    "expected": [
+      "don't know"
+    ],
+    "answer": "I don't have information on international shipping to Japan. You can check our store policy for more details or contact our customer support team.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "N03",
+    "category": "no_answer",
+    "question": "What are your opening hours?",
+    "expected": [
+      "don't know"
+    ],
+    "answer": "I don't have information on our opening hours. You can check our website or contact our customer support team for more information.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "N04",
+    "category": "no_answer",
+    "question": "Do you sell iPhones?",
+    "expected": [
+      "don't know"
+    ],
+    "answer": "We don't have information on our store policy regarding iPhones. However, we do sell iPhones from various manufacturers. Would you like to know more about our current iPhone selection?",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "E01",
+    "category": "missing_info",
+    "question": "What did Emma Brown order?",
+    "expected": [
+      "order number"
+    ],
+    "answer": "I don't know what Emma Brown ordered. Please provide her order number so I can help you with that information.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "E02",
+    "category": "missing_info",
+    "question": "Where is my order?",
+    "expected": [
+      "order number"
+    ],
+    "answer": "I don't know. Please provide your order number so I can help you with the location of your order.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "E03",
+    "category": "missing_info",
+    "question": "When will order 9999 arrive?",
+    "expected": [
+      "not found"
+    ],
+    "answer": "We don't know when order 9999 will arrive because the order was not found. According to our store policy, orders placed before 2:00 PM are shipped on the same business day, but we don't have information about the shipping status of order 9999.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "react",
+    "id": "M08",
+    "category": "mixed",
+    "question": "Did order 1047 get free delivery?",
+    "expected": [
+      "no"
+    ],
+    "answer": "No, order 1047 did not get free delivery. The customer paid $5 for delivery.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "P01",
+    "category": "policy",
+    "question": "How long is the warranty?",
+    "expected": [
+      "24 months"
+    ],
+    "answer": "Our warranty period is 24 months. If you experience any defects, please fill in the complaint form and attach your proof of purchase within 14 days.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "P02",
+    "category": "policy",
+    "question": "How much does delivery cost?",
+    "expected": [
+      "$5",
+      "$70"
+    ],
+    "answer": "Our standard courier delivery takes 1 to 3 business days and costs $5. Delivery is free for orders over $70.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "P03",
+    "category": "policy",
+    "question": "How long does delivery take?",
+    "expected": [
+      "1-3"
+    ],
+    "answer": "Our standard courier delivery takes 1 to 3 business days and costs $5. Delivery is free for orders over $70.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "P04",
+    "category": "policy",
+    "question": "If I order before 2 PM, when will my order ship?",
+    "expected": [
+      "same business day"
+    ],
+    "answer": "If you order before 2 PM, your order will ship on the same business day. Standard courier delivery takes 1 to 3 business days and costs $5. Delivery is free for orders over $70.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "P05",
+    "category": "policy",
+    "question": "Who pays for return shipping?",
+    "expected": [
+      "customer",
+      "damaged"
+    ],
+    "answer": "At TechNova, the customer pays for return shipping, unless the product is damaged.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "P06",
+    "category": "policy",
+    "question": "What payment methods do you accept?",
+    "expected": [
+      "card",
+      "PayPal",
+      "bank transfer"
+    ],
+    "answer": "We accept credit cards, PayPal, and bank transfers. For bank transfers, the order is processed after the payment is received.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "P07",
+    "category": "policy",
+    "question": "How long does it take to process a complaint?",
+    "expected": [
+      "14 days"
+    ],
+    "answer": "We typically process complaints within 14 days.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "P08",
+    "category": "policy",
+    "question": "In what condition must a returned product be?",
+    "expected": [
+      "unused",
+      "original packaging"
+    ],
+    "answer": "To return a product, it must be unused and in its original packaging. The customer pays the return shipping cost, unless the product is damaged.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "P09",
+    "category": "policy",
+    "question": "How do I report a defect?",
+    "expected": [
+      "complaint form",
+      "proof of purchase"
+    ],
+    "answer": "To report a defect, please fill in the complaint form and attach the proof of purchase. Complaints are processed within 14 days.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "P10",
+    "category": "policy",
+    "question": "When is an order paid by bank transfer processed?",
+    "expected": [
+      "payment is received"
+    ],
+    "answer": "Our order is processed after the payment is received via bank transfer.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "O01",
+    "category": "order",
+    "question": "What is the status of order 1043?",
+    "expected": [
+      "shipped"
+    ],
+    "answer": "The status of order 1043 is shipped. You are eligible for a return within 30 days after delivery. Unfortunately, the order is not eligible for free delivery, as the total cost is below $70.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "O02",
+    "category": "order",
+    "question": "What is the status of order 1046?",
+    "expected": [
+      "processing"
+    ],
+    "answer": "The status of order 1046 is \"processing\". Your order is currently being processed. You can expect to receive your Mechanical keyboard within the next few days. The return status is \"Not delivered yet: return possible within 30 days after delivery.\" and the delivery status is \"Free delivery: order total $99.90 is above $70.\"",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "O03",
+    "category": "order",
+    "question": "What was ordered in order 1045?",
+    "expected": [
+      "laptop stand"
+    ],
+    "answer": "The order 1045 was for a Laptop stand, but it was cancelled and never delivered. The return status is \"Return NOT possible\" and the delivery status is \"No delivery\".",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "O04",
+    "category": "order",
+    "question": "How much did order 1042 cost?",
+    "expected": [
+      "129"
+    ],
+    "answer": "The order 1042 cost $129.00.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "O05",
+    "category": "order",
+    "question": "When was order 1044 delivered?",
+    "expected": [
+      "2026-10-20"
+    ],
+    "answer": "Your order 1044 was delivered on October 20, 2026. The delivery was free since the order total was above $70. You have until November 19, 2026, to return the item if needed.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "O06",
+    "category": "order",
+    "question": "Was order 1045 cancelled?",
+    "expected": [
+      "cancelled"
+    ],
+    "answer": "\"Order 1045 was cancelled. The return status is: Return NOT possible: the order was cancelled and never delivered. The delivery status is: No delivery: the order was cancelled.\"",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "M01",
+    "category": "mixed",
+    "question": "Can I still return order 1042?",
+    "expected": [
+      "yes"
+    ],
+    "answer": "You can still return order 1042. The return window is open until November 9, 2026.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "M02",
+    "category": "mixed",
+    "question": "Can I still return order 1041?",
+    "expected": [
+      "not possible"
+    ],
+    "answer": "\"Sorry Anna, order 1041 is no longer eligible for return. The return window closed on 2026-10-18. You can still contact us to discuss other options, but a return is not possible.\"",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "M03",
+    "category": "mixed",
+    "question": "Until when can I return order 1044?",
+    "expected": [
+      "2026-11-19"
+    ],
+    "answer": "You can return order 1044 until November 19th, 2026.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "M04",
+    "category": "mixed",
+    "question": "Did order 1044 get free delivery?",
+    "expected": [
+      "yes"
+    ],
+    "answer": "\"Order 1044 got free delivery. The order was delivered on 2026-10-20 and the return window is open until 2026-11-19.\"",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "M05",
+    "category": "mixed",
+    "question": "How much was delivery for order 1043?",
+    "expected": [
+      "$5"
+    ],
+    "answer": "The delivery cost for order 1043 was $5. The order was shipped on 2026-10-23, but the delivery date is not yet available. The return status is \"Not delivered yet: return possible within 30 days after delivery.\" and the delivery status is \"NOT free delivery: the customer paid $5 for delivery (free only above $70, order total $19.99).\"",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "M06",
+    "category": "mixed",
+    "question": "Did order 1041 qualify for free delivery?",
+    "expected": [
+      "no"
+    ],
+    "answer": "\"Hello Anna, I've checked on your order 1041. Unfortunately, it did not qualify for free delivery. The return status is Return NOT possible: the return window closed on 2026-10-18. The delivery status is NOT free delivery: the customer paid $5 for delivery (free only above $70, order total $59.99).\"",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "M07",
+    "category": "mixed",
+    "question": "The smartwatch from order 1042 stopped working. Is it still under warranty?",
+    "expected": [
+      "yes",
+      "24 months"
+    ],
+    "answer": "The smartwatch from order 1042 is still under warranty. You can report a defect by filling in the complaint form and attaching the proof of purchase. Complaints are processed within 14 days.",
+    "grader": false,
+    "human": false,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "N01",
+    "category": "no_answer",
+    "question": "Do you have a store in Krakow?",
+    "expected": [
+      "don't know"
+    ],
+    "answer": "I don't have this information.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "N02",
+    "category": "no_answer",
+    "question": "Do you ship to Japan?",
+    "expected": [
+      "don't know"
+    ],
+    "answer": "We do ship to Japan. Our standard courier delivery takes 1 to 3 business days and costs $5. Delivery is free for orders over $70.",
+    "grader": false,
+    "human": false,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "N03",
+    "category": "no_answer",
+    "question": "What are your opening hours?",
+    "expected": [
+      "don't know"
+    ],
+    "answer": "I don't have this information.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "N04",
+    "category": "no_answer",
+    "question": "Do you sell iPhones?",
+    "expected": [
+      "don't know"
+    ],
+    "answer": "I don't have this information.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "E01",
+    "category": "missing_info",
+    "question": "What did Emma Brown order?",
+    "expected": [
+      "order number"
+    ],
+    "answer": "I don't have this information. Please provide your order number so I can assist you further.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "E02",
+    "category": "missing_info",
+    "question": "Where is my order?",
+    "expected": [
+      "order number"
+    ],
+    "answer": "I need the order number to help you with that. Can you please provide the order number so I can look it up for you?",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "E03",
+    "category": "missing_info",
+    "question": "When will order 9999 arrive?",
+    "expected": [
+      "not found"
+    ],
+    "answer": "I don't have this information. Please check your order number and I'll be happy to help you with your inquiry.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "golden",
+    "agent": "graph",
+    "id": "M08",
+    "category": "mixed",
+    "question": "Did order 1047 get free delivery?",
+    "expected": [
+      "no"
+    ],
+    "answer": "\"Order 1047 did not get free delivery. The customer paid $5 for delivery. The return status is: Return possible until 11/22/2026.\"",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "react",
+    "id": "H01",
+    "category": "policy",
+    "question": "Can I pay with PayPal?",
+    "expected": [
+      "PayPal"
+    ],
+    "answer": "Yes, TechNova accepts PayPal payments.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "react",
+    "id": "H02",
+    "category": "policy",
+    "question": "My headphones arrived damaged. Do I have to pay to send them back?",
+    "expected": [
+      "don't have to pay"
+    ],
+    "answer": "Yes, you will have to pay for the return shipping cost.",
+    "grader": false,
+    "human": false,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "react",
+    "id": "H03",
+    "category": "policy",
+    "question": "What do I need to attach when I file a complaint?",
+    "expected": [
+      "proof of purchase"
+    ],
+    "answer": "You need to attach the TechNova Online Store Policy, which is available on our website.",
+    "grader": false,
+    "human": false,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "react",
+    "id": "H04",
+    "category": "policy",
+    "question": "If I place an order at 3 PM, will it ship the same day?",
+    "expected": [
+      "2:00 PM"
+    ],
+    "answer": "No, orders placed before 2:00 PM are not guaranteed to ship the same day.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "react",
+    "id": "H05",
+    "category": "order",
+    "question": "What did I buy in order 1046?",
+    "expected": [
+      "keyboard"
+    ],
+    "answer": "You bought a Mechanical keyboard for $99.90. It is currently in the processing status and is expected to be delivered free of charge.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "react",
+    "id": "H06",
+    "category": "order",
+    "question": "On what date did I place order 1047?",
+    "expected": [
+      "2026-10-21"
+    ],
+    "answer": "The order was placed on 2026-10-21.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "react",
+    "id": "H07",
+    "category": "mixed",
+    "question": "Is it too late to send back the webcam from order 1047?",
+    "expected": [
+      "can return"
+    ],
+    "answer": "Yes, it is too late to send back the webcam. The return window closed on 2026-11-22, and the webcam was delivered on 2026-10-23, which is before the return deadline.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "react",
+    "id": "H08",
+    "category": "mixed",
+    "question": "Do I have to pay for shipping on order 1046?",
+    "expected": [
+      "free"
+    ],
+    "answer": "No, you do not have to pay for shipping on order 1046. The order total is above $70, so it is eligible for free delivery.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "react",
+    "id": "H09",
+    "category": "mixed",
+    "question": "The Bluetooth speaker from order 1044 broke. Is the warranty still valid?",
+    "expected": [
+      "yes",
+      "24 months"
+    ],
+    "answer": "According to the store policy, the warranty for the Bluetooth speaker is 24 months, and since the order was received on October 17, 2026, the warranty would still be valid.",
+    "grader": false,
+    "human": false,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "react",
+    "id": "H10",
+    "category": "no_answer",
+    "question": "Can I pay in installments?",
+    "expected": [
+      "don't know"
+    ],
+    "answer": "No, TechNova does not offer installment payment options.",
+    "grader": false,
+    "human": false,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "react",
+    "id": "H11",
+    "category": "no_answer",
+    "question": "Do you offer a student discount?",
+    "expected": [
+      "don't know"
+    ],
+    "answer": "I don't have information on student discounts. You can check our store policy for more details.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "react",
+    "id": "H12",
+    "category": "missing_info",
+    "question": "Has my package been shipped yet?",
+    "expected": [
+      "order number"
+    ],
+    "answer": "No, according to the store policy, orders are shipped on the same business day for orders placed before 2:00 PM. However, I need the order number to confirm the status of your package. Please provide your order number so I can look it up.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "graph",
+    "id": "H01",
+    "category": "policy",
+    "question": "Can I pay with PayPal?",
+    "expected": [
+      "PayPal"
+    ],
+    "answer": "We accept PayPal as one of our payment options.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "graph",
+    "id": "H02",
+    "category": "policy",
+    "question": "My headphones arrived damaged. Do I have to pay to send them back?",
+    "expected": [
+      "don't have to pay"
+    ],
+    "answer": "You can return your damaged headphones within 30 days of receiving the delivery. The product must be unused and in its original packaging. You will be responsible for the return shipping cost, unless the product is damaged.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "graph",
+    "id": "H03",
+    "category": "policy",
+    "question": "What do I need to attach when I file a complaint?",
+    "expected": [
+      "proof of purchase"
+    ],
+    "answer": "When filing a complaint, you need to attach the proof of purchase.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "graph",
+    "id": "H04",
+    "category": "policy",
+    "question": "If I place an order at 3 PM, will it ship the same day?",
+    "expected": [
+      "2:00 PM"
+    ],
+    "answer": "If you place an order before 2:00 PM, it will ship on the same business day.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "graph",
+    "id": "H05",
+    "category": "order",
+    "question": "What did I buy in order 1046?",
+    "expected": [
+      "keyboard"
+    ],
+    "answer": "Your order 1046 is a Mechanical keyboard. The order was placed by Lukas Meyer. The total cost is $99.90. The order is currently in processing status. You are eligible for free delivery. If you have any issues with your order, you can return it within 30 days after delivery.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "graph",
+    "id": "H06",
+    "category": "order",
+    "question": "On what date did I place order 1047?",
+    "expected": [
+      "2026-10-21"
+    ],
+    "answer": "Your order 1047 was placed on October 21, 2026. The order was delivered on October 23, 2026, and you have a return window until November 22, 2026. The order status is delivered, and you paid for delivery.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "graph",
+    "id": "H07",
+    "category": "mixed",
+    "question": "Is it too late to send back the webcam from order 1047?",
+    "expected": [
+      "can return"
+    ],
+    "answer": "\"Hello Sophie, it's not too late to return your webcam. You have until November 22nd to initiate the return. The return status is 'Return possible until 2026-11-22.' Please contact our customer support to start the return process.\"",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "graph",
+    "id": "H08",
+    "category": "mixed",
+    "question": "Do I have to pay for shipping on order 1046?",
+    "expected": [
+      "free"
+    ],
+    "answer": "Hello Lukas, \n\nYes, you have free shipping on order 1046 since the total order value is above $70. \n\nWould you like to know the status of your order or something else?",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "graph",
+    "id": "H09",
+    "category": "mixed",
+    "question": "The Bluetooth speaker from order 1044 broke. Is the warranty still valid?",
+    "expected": [
+      "yes",
+      "24 months"
+    ],
+    "answer": "The warranty for your Bluetooth speaker from order 1044 is still valid. You can report the defect by filling in the complaint form and attaching the proof of purchase. We will process your complaint within 14 days.",
+    "grader": false,
+    "human": false,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "graph",
+    "id": "H10",
+    "category": "no_answer",
+    "question": "Can I pay in installments?",
+    "expected": [
+      "don't know"
+    ],
+    "answer": "We accept credit cards, PayPal, and bank transfers. For bank transfers, the order is processed after the payment is received.",
+    "grader": false,
+    "human": false,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "graph",
+    "id": "H11",
+    "category": "no_answer",
+    "question": "Do you offer a student discount?",
+    "expected": [
+      "don't know"
+    ],
+    "answer": "I don't have this information.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  },
+  {
+    "set": "heldout",
+    "agent": "graph",
+    "id": "H12",
+    "category": "missing_info",
+    "question": "Has my package been shipped yet?",
+    "expected": [
+      "order number"
+    ],
+    "answer": "Your package has not been shipped yet. It's likely that it's still being processed. You can check the status of your order by searching for your order number on our website.",
+    "grader": true,
+    "human": true,
+    "note": ""
+  }
+]
