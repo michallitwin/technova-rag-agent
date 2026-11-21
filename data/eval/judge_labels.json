@@ -381,8 +381,8 @@
     ],
     "answer": "We don't have information on our store policy regarding iPhones. However, we do sell iPhones from various manufacturers. Would you like to know more about our current iPhone selection?",
     "grader": true,
-    "human": true,
-    "note": ""
+    "human": false,
+    "note": "model hallucinated; we do sell iPhones from various manufacturers. Policy doesn't say anything about it"
   },
   {
     "set": "golden",
@@ -451,8 +451,8 @@
     ],
     "answer": "Our warranty period is 24 months. If you experience any defects, please fill in the complaint form and attach your proof of purchase within 14 days.",
     "grader": true,
-    "human": true,
-    "note": ""
+    "human": false,
+    "note": "invented: '14 days' is complaint processing time, not a deadline for the customer"
   },
   {
     "set": "golden",
@@ -766,8 +766,8 @@
     ],
     "answer": "The smartwatch from order 1042 is still under warranty. You can report a defect by filling in the complaint form and attaching the proof of purchase. Complaints are processed within 14 days.",
     "grader": false,
-    "human": false,
-    "note": ""
+    "human": true,
+    "note": "RULE: correct but incomplete = true; any false or invented claim = false. Still under warranty is true, 24 months missing."
   },
   {
     "set": "golden",
@@ -934,8 +934,8 @@
     ],
     "answer": "No, orders placed before 2:00 PM are not guaranteed to ship the same day.",
     "grader": true,
-    "human": true,
-    "note": ""
+    "human": false,
+    "note": "reverses the policy: orders before 2:00 PM DO ship the same day"
   },
   {
     "set": "heldout",
@@ -976,8 +976,8 @@
     ],
     "answer": "Yes, it is too late to send back the webcam. The return window closed on 2026-11-22, and the webcam was delivered on 2026-10-23, which is before the return deadline.",
     "grader": true,
-    "human": true,
-    "note": ""
+    "human": false,
+    "note": "reversed: says it is too late, but the return window is open until 2026-11-22"
   },
   {
     "set": "heldout",
@@ -1005,8 +1005,8 @@
     ],
     "answer": "According to the store policy, the warranty for the Bluetooth speaker is 24 months, and since the order was received on October 17, 2026, the warranty would still be valid.",
     "grader": false,
-    "human": false,
-    "note": ""
+    "human": true,
+    "note": "correct: 24 months and still valid; grader missed 'still be valid'"
   },
   {
     "set": "heldout",
@@ -1047,8 +1047,8 @@
     ],
     "answer": "No, according to the store policy, orders are shipped on the same business day for orders placed before 2:00 PM. However, I need the order number to confirm the status of your package. Please provide your order number so I can look it up.",
     "grader": true,
-    "human": true,
-    "note": ""
+    "human": false,
+    "note": "starts with 'No' = guessed status without an order number; the request for the number comes after"
   },
   {
     "set": "heldout",
@@ -1174,8 +1174,8 @@
     ],
     "answer": "The warranty for your Bluetooth speaker from order 1044 is still valid. You can report the defect by filling in the complaint form and attaching the proof of purchase. We will process your complaint within 14 days.",
     "grader": false,
-    "human": false,
-    "note": ""
+    "human": true,
+    "note": "note: misses 24 months guarantee"
   },
   {
     "set": "heldout",
@@ -1216,7 +1216,7 @@
     ],
     "answer": "Your package has not been shipped yet. It's likely that it's still being processed. You can check the status of your order by searching for your order number on our website.",
     "grader": true,
-    "human": true,
-    "note": ""
+    "human": false,
+    "note": "invented a status without an order number; should ask for the number"
   }
 ]
