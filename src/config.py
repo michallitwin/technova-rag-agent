@@ -11,6 +11,8 @@ class Settings:
     ollama_url: str = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
     llm_model: str = os.getenv("LLM_MODEL", "llama3.2")
     llm_timeout_s: int = int(os.getenv("LLM_TIMEOUT_S", "120"))
+    # LLM judge for the evaluation: a different, larger model than the agent's
+    judge_model: str = os.getenv("JUDGE_MODEL", "qwen2.5:7b")
 
     # Embeddings and vector store
     embedding_model: str = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
