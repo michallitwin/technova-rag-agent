@@ -1,0 +1,104 @@
+{
+  "judge_model": "qwen2.5:7b",
+  "summary": {
+    "grader": {
+      "rows": 5,
+      "agree": 5,
+      "agreement": 1.0,
+      "false_pass": 0,
+      "false_fail": 0
+    },
+    "judge": {
+      "rows": 5,
+      "agree": 4,
+      "agreement": 0.8,
+      "false_pass": 1,
+      "false_fail": 0
+    }
+  },
+  "no_verdict": 0,
+  "rows": [
+    {
+      "set": "golden",
+      "agent": "react",
+      "id": "P01",
+      "category": "policy",
+      "question": "How long is the warranty?",
+      "expected": [
+        "24 months"
+      ],
+      "answer": "The warranty period at TechNova is 24 months.",
+      "grader": true,
+      "human": true,
+      "note": "",
+      "judge": true,
+      "judge_reason": "The answer provides the correct warranty period."
+    },
+    {
+      "set": "golden",
+      "agent": "react",
+      "id": "P02",
+      "category": "policy",
+      "question": "How much does delivery cost?",
+      "expected": [
+        "$5",
+        "$70"
+      ],
+      "answer": "The delivery cost is $5 for standard courier delivery, and it's free for orders over $70.",
+      "grader": true,
+      "human": true,
+      "note": "",
+      "judge": true,
+      "judge_reason": "The assistant provides correct information about the delivery cost for orders over $70, which matches the reference facts."
+    },
+    {
+      "set": "golden",
+      "agent": "react",
+      "id": "P03",
+      "category": "policy",
+      "question": "How long does delivery take?",
+      "expected": [
+        "1-3"
+      ],
+      "answer": "Delivery typically takes 1 to 3 business days.",
+      "grader": true,
+      "human": true,
+      "note": "",
+      "judge": true,
+      "judge_reason": "The answer provides the correct range of delivery time."
+    },
+    {
+      "set": "golden",
+      "agent": "react",
+      "id": "P04",
+      "category": "policy",
+      "question": "If I order before 2 PM, when will my order ship?",
+      "expected": [
+        "same business day"
+      ],
+      "answer": "Your order will ship on the same business day if you place it before 2:00 PM.",
+      "grader": true,
+      "human": true,
+      "note": "",
+      "judge": true,
+      "judge_reason": "The assistant provided the correct information."
+    },
+    {
+      "set": "golden",
+      "agent": "react",
+      "id": "P05",
+      "category": "policy",
+      "question": "Who pays for return shipping?",
+      "expected": [
+        "customer",
+        "damaged"
+      ],
+      "answer": "The customer pays for return shipping.",
+      "grader": false,
+      "human": false,
+      "note": "",
+      "judge": true,
+      "judge_reason": "Correctly states who pays for return shipping."
+    }
+  ]
+}
