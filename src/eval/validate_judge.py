@@ -5,8 +5,10 @@ label), asks the judge to grade every answer and reports how often the grader an
 the human. The judge is only worth using if it agrees with the human more often than the grader.
 
 Usage:
-    uv run --env-file .env python -m src.eval.validate_judge
-    uv run --env-file .env python -m src.eval.validate_judge --limit 5   # quick test on 5 answers
+    TODAY=2026-10-26 uv run --env-file .env python -m src.eval.validate_judge
+    TODAY=2026-10-26 uv run --env-file .env python -m src.eval.validate_judge --limit 5   # quick test
+
+TODAY must be the date the labelled answers were produced with, so the computed return statuses match.
 """
 
 import argparse
@@ -15,8 +17,10 @@ import time
 from datetime import datetime
 from pathlib import Path
 
+from scripts.create_db import ORDERS
+from src.agent.tools import get_order
 from src.config import settings
-from src.eval.judge import judge_answer
+from src.eval.judge import build_store_data, judge_answer
 
 LABELS_PATH = Path("data/eval/judge_labels.json")
 SET_PATHS = {"golden": Path("data/eval/golden_set.json"), "heldout": Path("data/eval/heldout_set.json")}
@@ -30,6 +34,13 @@ def load_expected_facts() -> dict[tuple[str, str], list[list[str]]]:
         for item in json.loads(path.read_text(encoding="utf-8")):
             facts[(set_name, item["id"])] = item["expected_facts"]
     return facts
+
+
+def load_store_data() -> str:
+    """Policy text plus every order as get_order returns it (statuses computed in code, as the agent saw them)."""
+    policy = (settings.docs_dir / "store_policy.txt").read_text(encoding="utf-8")
+    orders = [get_order(order_id, customer) for order_id, customer, *_ in ORDERS]
+    return build_store_data(policy, orders)
 
 
 def agreement(labels: list[dict], field: str) -> dict:
@@ -51,12 +62,16 @@ def main() -> None:
     parser.add_argument("--limit", type=int, default=None, help="only the first N answers (quick test)")
     args = parser.parse_args()
 
+    if not settings.today_override:
+        parser.error("set TODAY=YYYY-MM-DD (the date the labelled answers were produced with)")
+
     labels = json.loads(LABELS_PATH.read_text(encoding="utf-8"))[: args.limit]
     facts = load_expected_facts()
+    store_data = load_store_data()
 
     start = time.perf_counter()
     for i, row in enumerate(labels, start=1):
-        verdict = judge_answer(row["question"], facts[(row["set"], row["id"])], row["answer"])
+        verdict = judge_answer(row["question"], facts[(row["set"], row["id"])], row["answer"], store_data)
         row["judge"], row["judge_reason"] = verdict["pass"], verdict["reason"]
         print(f"{i:>3}/{len(labels)} {row['set']:<7} {row['agent']:<5} {row['id']:<4} "
               f"human={row['human']!s:<5} judge={row['judge']!s:<5}")

@@ -55,3 +55,19 @@ def test_agreement_counts_both_kinds_of_mistakes():
     ]
     s = agreement(labels, "judge")
     assert (s["rows"], s["agree"], s["false_pass"], s["false_fail"]) == (3, 1, 1, 1)
+
+
+def test_store_data_lists_policy_and_computed_statuses(monkeypatch):
+    monkeypatch.setattr(judge, "current_date", lambda: __import__("datetime").date(2026, 10, 26))
+    order = {"order_id": 1044, "customer": "Piotr Nowak", "product": "Bluetooth speaker", "total_usd": 85.5,
+             "order_date": "2026-10-17", "delivery_date": "2026-10-20", "status": "delivered",
+             "return_status": "Return possible until 2026-11-19.", "delivery_status": "Free delivery."}
+    data = judge.build_store_data("Warranty. 24 months.", [order])
+    assert "Today: 2026-10-26" in data
+    assert "Warranty. 24 months." in data
+    assert "order 1044" in data and "Return possible until 2026-11-19." in data
+
+
+def test_store_data_goes_into_the_prompt():
+    prompt = judge.build_prompt("q", FACTS, "a", store_data="Orders: - order 1044")
+    assert prompt.startswith("Store data:\nOrders: - order 1044")
