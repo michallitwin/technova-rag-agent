@@ -110,6 +110,8 @@ uv run --env-file .env streamlit run src/ui/streamlit_app.py   # Streamlit demo
 TODAY=2026-10-26 uv run --env-file .env python -m src.eval.run_eval --agents react graph
 # held-out set (questions never used for tuning), results in a separate folder
 TODAY=2026-10-26 EVAL_SET_PATH=data/eval/heldout_set.json EVAL_RESULTS_DIR=data/eval/results/heldout uv run --env-file .env python -m src.eval.run_eval --agents react graph
+# LLM judge: agreement with 86 hand-labelled answers (model set by JUDGE_MODEL)
+TODAY=2026-10-26 uv run --env-file .env python -m src.eval.validate_judge
 
 uv run ruff check .        # lint
 uv run pytest -v           # tests (no LLM needed)
@@ -196,7 +198,24 @@ What it shows:
 - **ReAct was more overfitted** to the golden set (94% → 75%) than LangGraph (90% → 83%). Part of the loop's lead came from prompt fixes for specific questions.
 - **Retrieval is not the problem** (hit@2 = 100%); every error comes from the model.
 - **Two weaknesses repeat on both sets:** questions with no answer in the data (both agents invent or deflect instead of saying "I don't know") and order + policy questions (LangGraph calls one tool).
-- With 12 questions, one answer is ~8 percentage points, so these numbers are a direction, not a precise score. The grading error in H09 was not "fixed" after seeing the answer; an LLM judge is the next step.
+- With 12 questions, one answer is ~8 percentage points, so these numbers are a direction, not a precise score. The grading error in H09 was not "fixed" after seeing the answer; an [LLM judge](#llm-judge) was tried instead.
+
+### LLM judge
+
+The keyword grader checks words, not meaning (H09: "would still be valid" failed). I tested an LLM judge (`src/eval/judge.py`): a different, larger model than the agent (Qwen 2.5 7B vs Llama 3.2 3B) gets the store data, the question, the reference facts and the answer, writes a reason first and then a pass/fail verdict. Before trusting it, I labelled 86 answers by hand (golden + held-out, both agents, `data/eval/judge_labels.json`) and measured how often each grader agrees with me:
+
+| | Agreement with human labels | False pass | False fail | Errors |
+|---|---|---|---|---|
+| Keyword grader | **89.5%** | 6 | 3 | **9** |
+| LLM judge v1 (no store data) | 73.3% | 2 | 21 | 23 |
+| LLM judge v2 (with store data) | 87.2% | 6 | 5 | 11 |
+
+- **v1 failed correct answers** because it could not check them: an answer with a correct extra detail (a delivery date, a price) looked "invented".
+- **Giving the judge the store data cut false fails from 21 to 5**, but it still did not beat the keyword grader and let as many wrong answers through (6 false passes).
+- **The 7B judge misreads data and its own rules:** it passed "We do not have a store in Krakow" for a question the data cannot answer, and wrote "$99.90 is above $70, but the customer paid for delivery" in one reason.
+- v2 was changed after seeing v1's mistakes on the same 86 labels, so 87% is optimistic. The prompt is not tuned further on these labels.
+
+Decision: the keyword grader stays the main metric. The judge is kept as code: the model is a setting (`JUDGE_MODEL`), and with a Bedrock client it will be re-validated on the same labels with a stronger model (Claude on Amazon Bedrock). It replaces the grader only if it agrees with the human labels more often. Until then it is useful as a second opinion: answers where the grader and the judge disagree go to manual review.
 
 ### History of changes
 
@@ -253,6 +272,7 @@ Smaller choices: prompts live in `config/prompts/`, settings come from environme
 - **Cancelled orders got the wrong return status.** `return_status` only checked the delivery date, so a cancelled order (no delivery date) got "Not delivered yet: return possible within 30 days after delivery", and the agent could promise a return. The keyword grader marked these answers as correct; the bug was found by reading the answers. Fixed with a check for cancelled orders before the date logic, plus a regression test.
 - **A prompt rule for "I don't know" made the agent refuse too often.** On both evaluation sets the agents answered unanswerable questions with an invented "no" or listed other options, because the search returns a related section (e.g. Payments for "installments"). A rule saying "a related section is not an answer; say I don't have this information" fixed 1 golden-set question and broke 4: ReAct refused an answerable policy question, and both agents stopped asking for an order number. LangGraph went from 90% to 84%. Reverted. With a small model, prompt rules trade one failure for another; the next step is a check in code or a stronger model. The run is kept in `data/eval/results/experiments/`.
 - **Customer-facing tool messages broke the ReAct loop.** The LangGraph demo once told a customer "the customer needs to check their order number", copied from the tool error "Ask the customer to check the order number". Rewriting the two errors as sentences for the customer ("Please check your order number") broke one ReAct question (E03: "I don't know" instead of asking for the number) and changed nothing else. The old sentence works as an instruction for the loop, so it was reverted. Compared on the same machine: the first comparison mixed the change with a new laptop, which alone moved LangGraph from 90% to 94% (M02 now passes).
+- **A local LLM judge did not beat keyword matching.** With store data, Qwen 2.5 7B agreed with human labels 87.2% of the time, the keyword grader 89.5%. A judge is only as good as the model behind it; it has to be validated against human labels before it replaces anything. See [LLM judge](#llm-judge).
 - **A too broad `except` hid a bug.** After the ownership fix, `run_tool` called `get_order` without the customer. The `TypeError` was caught by an `except (KeyError, ValueError, TypeError)` meant for bad order numbers, so the agent asked customers for an order number they had already given. Nothing crashed; a test on `run_tool` found it.
 - **The API read the wrong report.** `/api/eval/latest` took the last JSON file by name, and `adversarial_*.json` sorts after the date-named reports, so the endpoint crashed and the demo showed "API not reachable". It appeared only after a second report type was added. Fixed by reading date-named reports only, plus a regression test with both file types.
 

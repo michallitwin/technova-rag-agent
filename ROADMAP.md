@@ -9,7 +9,8 @@
 ## Evaluation
 - [x] Held-out set of 12 new questions the agents were not tuned on: ReAct 94% → 75%, LangGraph 90% → 83%
 - [ ] Unanswerable questions: decide in code whether the retrieved section mentions what was asked (a prompt rule was tried and reverted: fixed 1, broke 4), then compare with a stronger model (Bedrock)
-- [ ] LLM-as-a-judge (pass/fail), validated against hand-labelled answers
+- [x] LLM-as-a-judge (pass/fail), validated against 86 hand-labelled answers: local Qwen 7B 87.2% vs keyword grader 89.5%, kept as a second opinion
+- [ ] Re-validate the judge with Claude on Bedrock (same 86 labels; needs a Bedrock client next to Ollama)
 - [ ] Multi-turn test cases for conversation memory (e.g. "And when was it ordered?")
 - [x] Adversarial test set: 13 attack prompts (injection, prompt leak, other customers' data, business abuse, off-topic) + output guard, 10/13 → 12/13
 - [ ] Indirect prompt-injection test case (a policy chunk with a malicious instruction)
