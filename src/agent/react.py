@@ -2,6 +2,9 @@ import argparse
 import json
 import logging
 from string import Template
+from typing import Any, Literal
+
+from pydantic import BaseModel, ValidationError
 
 from src.agent.answer import answer_from_results
 from src.agent.guard import guard_answer
@@ -12,6 +15,22 @@ from src.llm.client import ask_ollama_json
 logger = logging.getLogger(__name__)
 
 INVALID_JSON_ERROR = {"error": "Your reply was not valid JSON. Reply with one JSON object."}
+INVALID_REPLY_ERROR = {
+    "error": 'Your reply had the wrong shape. Reply with {"tool": ..., "args": {...}} or {"final_answer": "..."}.'
+}
+
+
+class ToolCall(BaseModel):
+    """What a tool call from the model must look like."""
+
+    tool: Literal["get_order", "search_policy"]   # only the tools we really have
+    args: dict[str, Any] = {}                     # must be an object, not a list or null
+
+
+class FinalAnswer(BaseModel):
+    """What a final answer from the model must look like."""
+
+    final_answer: str                             # must be text, not a number or null
 
 
 def build_system_prompt() -> str:
@@ -60,9 +79,20 @@ def run_agent(question: str, customer: str | None = None, max_steps: int = setti
             steps.append({"call": None, "result": INVALID_JSON_ERROR})
             continue
 
+        # The model's reply is untrusted: check its shape before using it
+        try:
+            if isinstance(decision, dict) and "final_answer" in decision:
+                answer = FinalAnswer.model_validate(decision).final_answer
+            else:
+                decision = ToolCall.model_validate(decision).model_dump()
+        except ValidationError:
+            logger.info("Step %d: reply has the wrong shape", step_no)
+            steps.append({"call": None, "result": INVALID_REPLY_ERROR})
+            continue
+
         if "final_answer" in decision:
             logger.info("Step %d: final answer", step_no)
-            return {"answer": guard_answer(decision["final_answer"]), "steps": steps, "forced": False}
+            return {"answer": guard_answer(answer), "steps": steps, "forced": False}
 
         used_tools = [step["call"]["tool"] for step in steps if step["call"]]
         if decision.get("tool") in used_tools:

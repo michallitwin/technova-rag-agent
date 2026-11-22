@@ -86,7 +86,7 @@ def run_tool(choice: dict, customer: str | None = None) -> dict:
         if name == "get_order":
             return get_order(int(args["order_id"]), customer)        # must be an integer
         return search_policy(str(args["query"]))          # must be text
-    except (KeyError, ValueError, TypeError):
+    except (KeyError, ValueError, TypeError, OverflowError):   # OverflowError: number too big for SQLite
         if name == "get_order":
             return {"error": "No valid order number given. Ask the customer for their order number."}
         return {"error": f"Invalid arguments for {name}."}

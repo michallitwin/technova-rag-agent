@@ -64,6 +64,19 @@ def test_ask_passes_customer_from_header(client, monkeypatch):
     assert seen["customer"] == "Maria Garcia"
 
 
+def test_unexpected_error_returns_generic_500(monkeypatch):
+    # Internal details must stay in the server log, never reach the client
+    def broken_agent(question, customer=None):
+        raise RuntimeError("secret internal detail")
+
+    monkeypatch.setattr(main, "run_agent", broken_agent)
+    quiet_client = TestClient(main.app, raise_server_exceptions=False)
+    response = quiet_client.post("/api/ask", json={"question": "Can I return order 1042?"})
+    assert response.status_code == 500
+    assert response.json() == {"detail": "Internal server error."}
+    assert "secret" not in response.text
+
+
 def test_ask_rejects_blank_question(client):
     response = client.post("/api/ask", json={"question": "     "})
     assert response.status_code == 422

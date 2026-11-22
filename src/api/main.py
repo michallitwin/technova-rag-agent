@@ -1,15 +1,26 @@
 """HTTP API for the TechNova support agent (FastAPI)."""
 
 import json
+import logging
 
 import requests
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI, Header, HTTPException, Request
+from fastapi.responses import JSONResponse
 
 from src.agent.react import run_agent
 from src.api.schemas import AgentSummary, AskRequest, AskResponse, EvalSummaryResponse, HealthResponse
 from src.config import settings
 
+logger = logging.getLogger(__name__)
+
 app = FastAPI(title="TechNova Support Agent", version="0.1.0")
+
+
+@app.exception_handler(Exception)
+def unexpected_error(request: Request, err: Exception) -> JSONResponse:
+    """Last line of defence: details go to the server log, the client gets a generic message."""
+    logger.error("Unexpected error on %s", request.url.path, exc_info=err)
+    return JSONResponse(status_code=500, content={"detail": "Internal server error."})
 
 
 @app.get("/api/health", response_model=HealthResponse)
