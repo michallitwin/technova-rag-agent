@@ -312,7 +312,7 @@ Still open: answers are safe but sometimes over-cautious (A10 says "I don't have
 - The conversation memory is in RAM (`InMemorySaver`) and disappears on restart; a database-backed checkpointer is needed in production.
 - Runs on a small local model (`llama3.2`), so some answers are incomplete.
 
-A review of the whole repo (code, security and tests, read by an AI reviewer and checked by hand) listed 30 findings. Only a few were fixed or documented here; the rest (CI permissions and pinned actions, a non-root container, an allowlist of columns instead of `SELECT *`) is planned for the AWS deployment.
+A review of the whole repo (code, security and tests, read by AI reviewers; they did not run the code, so each finding is verified before it is fixed) listed 30 findings. Only a few are documented here so far; the rest (CI permissions and pinned actions, a non-root container, an allowlist of columns instead of `SELECT *`) is planned for the AWS deployment.
 
 
 ## Author
