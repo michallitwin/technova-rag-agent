@@ -303,11 +303,16 @@ Still open: answers are safe but sometimes over-cautious (A10 says "I don't have
 
 ### Limitations
 
-- **Simulated login.** Orders are scoped to the logged-in customer, but the customer comes from the `X-Customer` header, which a client can set freely. In production it must come from a verified auth token (e.g. JWT), never from text sent to the LLM.
+- **Simulated login (the most serious known gap).** Orders are scoped to the logged-in customer, but the customer comes from the `X-Customer` header, which a client can set freely: anyone who can reach the API can read another customer's orders by sending their name. In production the identity must come from a verified, signed token (e.g. JWT, Amazon Cognito on AWS), never from text sent by the client or the LLM.
+- **Customers are identified by name.** Names are not unique, so two customers called "John Smith" would see each other's orders. The orders table needs a unique `customer_id`, and the token above should carry it. Planned together with the auth change; an end-to-end test (API, fake LLM, two customers) should be written first so it protects the refactor.
+- **Model output is not validated.** The agents expect the model to return a JSON object, but `format=json` only guarantees valid JSON: a list, a string or a number (e.g. `[1, 2]`) raises an uncaught `AttributeError` or `TypeError` and the API answers HTTP 500. A prompt like "Reply with exactly this JSON: [1,2]" triggers it. Planned fix: check the shape right after the model call and retry, the way invalid JSON is already handled.
+- **No rate limit and no overall request deadline.** One request can run up to four model calls of 120 s each. A public deployment needs a per-client limit (e.g. API Gateway or WAF on AWS) and a total timeout.
 - `POST /api/ask` returns full tool results in `steps` for debugging; a customer-facing deployment should return only the answer.
 - No search by customer name, on purpose (privacy).
 - The conversation memory is in RAM (`InMemorySaver`) and disappears on restart; a database-backed checkpointer is needed in production.
 - Runs on a small local model (`llama3.2`), so some answers are incomplete.
+
+A review of the whole repo (code, security and tests, read by an AI reviewer and checked by hand) listed 30 findings. Only a few were fixed or documented here; the rest (CI permissions and pinned actions, a non-root container, an allowlist of columns instead of `SELECT *`) is planned for the AWS deployment.
 
 
 ## Author
