@@ -9,6 +9,9 @@ RUN uv sync --frozen --no-dev
 
 COPY . .
 
+# NEW: keep the embedding model inside /app so appuser can read it
+ENV HF_HOME=/app/.cache/huggingface
+
 # Build the orders database and the vector index inside the image
 # (the embedding model is downloaded once, at build time)
 RUN uv run --no-sync python -m scripts.create_db \
@@ -16,6 +19,10 @@ RUN uv run --no-sync python -m scripts.create_db \
 
 # At runtime use the model baked into the image, no Hugging Face calls
 ENV HF_HUB_OFFLINE=1
+
+# Run as a normal user, not root (least privilege)
+RUN useradd --create-home appuser && chown -R appuser /app
+USER appuser
 
 EXPOSE 8000
 
